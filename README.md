@@ -28,3 +28,6 @@ To get more help on the Angular CLI use `ng help` or go check out the [Angular C
 "# Fashionsphere" 
 "# Fashionsphere" 
 "# Fashionsphere" 
+
+## Informacion
+Esto proyecto es el trabajo de fin de curso de Marta Lopez Perez del instituto IES El cañaveral

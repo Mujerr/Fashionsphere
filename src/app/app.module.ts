@@ -10,6 +10,12 @@ import { RegistrarseComponent } from './componentes/registrarse/registrarse.comp
 import { CarritoComponent } from './componentes/carrito/carrito.component';
 import { PerfilComponent } from './componentes/perfil/perfil.component';
 
+//I18N imports 
+import { HttpClientModule, HttpClient } from '@angular/common/http';
+import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
+import { TranslateHttpLoader } from '@ngx-translate/http-loader';
+
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -22,7 +28,16 @@ import { PerfilComponent } from './componentes/perfil/perfil.component';
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule
+    AppRoutingModule,
+    HttpClientModule,
+    TranslateModule.forRoot({
+      loader: {
+        provide: TranslateLoader,
+        useFactory: (http: HttpClient) => new TranslateHttpLoader(http, './assets/i18n/', '.json'),
+        deps: [HttpClient]
+      },
+      defaultLanguage: 'es',
+    })
   ],
   providers: [],
   bootstrap: [AppComponent]

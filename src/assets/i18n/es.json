@@ -1,5 +1,19 @@
- {
-    "Idioma":"Español",
-    "Usuario":"Usuario"
-
+{
+   "Idioma":"Español",
+    "navbar":{
+      "Usuario":"Username",
+      "Envios":"Envío",
+      "Buscar":"Buscar",
+      "Politicas":"Politicas",
+      "Ofertas":"Ofertas",
+      "Productos":"Productos",
+      "Personalizado":"Personalizado",
+      "Servicios":"Servicios",
+      "Sobre":"About",
+      "Carro":"Cesta",    
+      "Cuenta":"Cuenta",
+      "OpcionesCatalogo":{
+        
+      }
+    }
  }

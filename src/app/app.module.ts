@@ -9,6 +9,9 @@ import { IniciarSesionComponent } from './componentes/iniciar-sesion/iniciar-ses
 import { RegistrarseComponent } from './componentes/registrarse/registrarse.component';
 import { CarritoComponent } from './componentes/carrito/carrito.component';
 import { PerfilComponent } from './componentes/perfil/perfil.component';
+//otros imports
+import { FormsModule } from '@angular/forms'; // importa FormsModule
+
 
 //I18N imports 
 import { HttpClientModule, HttpClient } from '@angular/common/http';
@@ -27,6 +30,7 @@ import { TranslateHttpLoader } from '@ngx-translate/http-loader';
     PerfilComponent
   ],
   imports: [
+    FormsModule,
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,

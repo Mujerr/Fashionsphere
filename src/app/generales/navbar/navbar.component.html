@@ -2,16 +2,16 @@
     <div class="container">
       <div class="row">
         <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 centerOnMobile">
-          <select  (change)="changeLanguage(selectLanguage.value)" class="me-3 border-0 bg-light">
-            <option #selectLanguage value="es">ES</option>
+          <select  [(ngModel)]="selectedLang" (change)="translate.use(selectedLang)" class="me-3 border-0 bg-light">
+            <option value="es">ES</option>
             <option value="en">EN-US</option>
           </select>
-          <span class="d-none d-lg-inline-block d-md-inline-block d-sm-inline-block d-xs-none me-3"><strong>mlopez@educa.madrid.org</strong></span>
-          <span class="me-3"><i class="fa-solid fa-phone me-1 text-warning"></i> <strong>+34 780 599 554</strong></span>
+          <span class="d-none d-lg-inline-block d-md-inline-block d-sm-inline-block d-xs-none me-3"><i class="fa-solid fa-envelope"></i><strong> mlopez@educa.madrid.org</strong></span>
+          <span class="me-3"><i class="fa-solid fa-phone me-1"></i> <strong>+34 780 599 554</strong></span>
         </div>
         <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 d-none d-lg-block d-md-block-d-sm-block d-xs-none text-end">
-          <span class="me-3"><i class="fa-solid fa-truck text-muted me-1"></i><a class="text-muted" href="#">Shipping</a></span>
-          <span class="me-3"><i class="fa-solid fa-file  text-muted me-2"></i><a class="text-muted" href="#">Policy</a></span>
+          <span class="me-3"><i class="fa-solid fa-truck text-muted me-1"></i><a class="text-muted" href="#">{{'navbar.Envios' | translate}}</a></span>
+          <span class="me-3"><i class="fa-solid fa-file  text-muted me-2"></i><a class="text-muted" href="#">{{'navbar.Politicas' |translate}}</a></span>
         </div>
       </div>
     </div>
@@ -25,9 +25,9 @@
   
       <div class="mx-auto my-3 d-lg-none d-sm-block d-xs-block">
         <div class="input-group">
-          <span class="border-warning input-group-text bg-warning text-white"><i class="fa-solid fa-magnifying-glass"></i></span>
-          <input type="text" class="form-control border-warning" style="color:#7a7a7a">
-          <button class="btn btn-warning text-white">Search</button>
+          <span class="border-dark input-group-text bg-dark text-white"><i class="fa-solid fa-magnifying-glass"></i></span>
+          <input type="text" class="form-control border-dark" style="color:#7a7a7a">
+          <button class="btn btn-dark text-white">{{'navbar.Buscar' |translate}}</button>
         </div>
       </div>
       <div class=" collapse navbar-collapse" id="navbarNavDropdown">
@@ -35,32 +35,61 @@
           <div class="input-group">
             <span class="border-dark input-group-text bg-dark text-white"><i class="fa-solid fa-magnifying-glass"></i></span>
             <input type="text" class="form-control border-dark" style="color:#7a7a7a">
-            <button class="btn btn-dark text-white">Search</button>
+            <button class="btn btn-dark text-white">{{'navbar.Buscar' |translate}}</button>
           </div>
         </div>
         <ul class="navbar-nav ms-auto ">
           <li class="nav-item">
-            <a class="nav-link mx-2 text-uppercase active" aria-current="page" href="#">Offers</a>
+            <a class="nav-link mx-2 text-uppercase active" aria-current="page" href="#">{{'navbar.Ofertas'|translate}}</a>
+          </li>
+          <li class="nav-item dropdown position-static">
+            <a class="nav-link dropdown-toggler text-uppercase" href="#" id="dropdown04" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" >
+              {{'navbar.Productos'|translate}}
+            </a>
+            <div class="dropdown-menu p-4" aria-labelledby="dropdown04">
+              <div class="row">
+                <div class="col-md-3 d-none d-md-block">
+                  <a href="#" class="img" style="background-image: url(../../../assets/img/images-1.jpg);"></a>
+                </div>
+              <div class="col-md-3">
+              <a class="dropdown-item" href="#">Page 1</a>
+              <a class="dropdown-item" href="#">Page 2</a>
+              <a class="dropdown-item" href="#">Page 3</a>
+              <a class="dropdown-item" href="#">Page 4</a>
+              </div>
+              <div class="col-md-3 d-none d-md-block">
+              <a href="#" class="img" style="background-image: url(../../../assets/img/images-1.jpg);"></a>
+              <div class="text">
+              <h3><a href="#">Amazing Architecture</a></h3>
+              <span>Architect</span>
+              </div>
+              </div>
+              <div class="col-md-3 d-none d-md-block">
+              <a href="#" class="img" style="background-image: url(../../../assets/img/images-1.jpg);"></a>
+              <div class="text">
+              <h3><a href="#">Amazing Architecture</a></h3>
+              <span>Architect</span>
+              </div>
+              </div>
+              </div>
+              </div>
           </li>
           <li class="nav-item">
-            <a class="nav-link mx-2 text-uppercase" href="#">Products</a>
+            <a class="nav-link mx-2 text-uppercase" href="#">{{'navbar.Personalizado' |translate}}</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link mx-2 text-uppercase" href="#">Catalog</a>
+            <a class="nav-link mx-2 text-uppercase" href="#">{{'navbar.Servicios' |translate}}</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link mx-2 text-uppercase" href="#">Services</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link mx-2 text-uppercase" href="#">About</a>
+            <a class="nav-link mx-2 text-uppercase" href="#">{{'navbar.Sobre' |translate}}</a>
           </li>
         </ul>
         <ul class="navbar-nav ms-auto ">
           <li class="nav-item">
-            <a class="nav-link mx-2 text-uppercase" href="#"><i class="fa-solid fa-cart-shopping me-1"></i> Cart</a>
+            <a class="nav-link mx-1 text-uppercase" href="#"><i class="fa-solid fa-cart-shopping me-1"></i>{{'navbar.Carro'|translate}}</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link mx-2 text-uppercase" href="#"><i class="fa-solid fa-circle-user me-1"></i> Account</a>
+            <a class="nav-link mx-1 text-uppercase" href="#"><i class="fa-solid fa-circle-user me-1"></i> {{'navbar.Cuenta'|translate}}</a>
           </li>
         </ul>
       </div>

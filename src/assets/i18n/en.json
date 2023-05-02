@@ -1,4 +1,19 @@
  {
-    "Idioma":"English",
-    "Usuario":"Username"
+   "Idioma":"English",
+    "navbar":{
+      "Usuario":"Username",
+      "Envios":"Shipping",
+      "Buscar":"Search",
+      "Politicas":"Policy",
+      "Ofertas":"Offers",
+      "Productos":"Products",
+      "Personalizado":"customized",
+      "Servicios":"Services",
+      "Sobre":"About",
+      "Carro":"Cart",
+      "Cuenta":"Account",
+      "OpcionesCatalogo":{
+        
+      }
+    }
  }

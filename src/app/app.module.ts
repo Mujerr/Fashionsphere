@@ -12,13 +12,19 @@ import { PerfilComponent } from './componentes/perfil/perfil.component';
 //otros imports
 import { FormsModule } from '@angular/forms'; // importa FormsModule
 
+//firebase 
+import { AngularFireModule } from '@angular/fire/compat';
+import { AngularFireStorageModule } from '@angular/fire/compat/storage';
+import { firebaseConfig } from './enviroments/enviroment.config'
 
 //I18N imports 
 import { HttpClientModule, HttpClient } from '@angular/common/http';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 
-
+//imports de servicios
+import { RopaService } from './servicios/ropa.service';
+import { ArticulosComponent } from './componentes/articulos/articulos.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -27,13 +33,16 @@ import { TranslateHttpLoader } from '@ngx-translate/http-loader';
     IniciarSesionComponent,
     RegistrarseComponent,
     CarritoComponent,
-    PerfilComponent
+    PerfilComponent,
+    ArticulosComponent
   ],
   imports: [
     FormsModule,
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
+    AngularFireModule.initializeApp(firebaseConfig),
+    AngularFireStorageModule,
     TranslateModule.forRoot({
       loader: {
         provide: TranslateLoader,
@@ -43,7 +52,7 @@ import { TranslateHttpLoader } from '@ngx-translate/http-loader';
       defaultLanguage: 'es',
     })
   ],
-  providers: [],
+  providers: [RopaService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

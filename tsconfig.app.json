@@ -5,8 +5,11 @@
     "outDir": "./out-tsc/app",
     "resolveJsonModule": true,
     "types": [
-      "@angular/localize"
-    ]
+      "@angular/localize",
+      "node"
+    ],
+    "typeRoots": [ "../node_modules/@types" ]
+
   },
   "files": [
     "src/main.ts"

@@ -1,0 +1,18 @@
+.btn-circle {
+    border-radius: 50%;
+    height: 22px;
+    width: 22px;
+    padding: 0;
+    text-align: center;
+    font-size: 14px;
+    line-height: 32px;
+  }
+  /* Estilo para mostrar el borde cuando el ratón pasa por encima */
+.btn-circle:hover .color-border {
+  opacity: 1;
+}
+
+/* Estilo para mostrar el borde cuando el botón está activo */
+.btn-circle.active .color-border {
+  opacity: 1;
+}

@@ -1,0 +1,53 @@
+.card {
+    border: none;
+    border-radius: 0;
+    overflow: hidden;
+    transition: transform 0.2s;
+  }
+  
+  .card:hover {
+    transform: translateY(-5px);
+  }
+  
+  .card-img-top {
+    height: 300px;
+    object-fit: cover;
+  }
+  
+  .card-title {
+    font-size: 1.2rem;
+    margin-bottom: 0.5rem;
+  }
+  
+  .card-price {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: black;
+    margin-bottom: 1rem;
+  }
+  
+  .btn-primary {
+    background-color: black;
+    border-color: black;
+  }
+  
+  .btn-primary:hover {
+    background-color: black;
+    border-color: black;
+  }
+  
+  .btn-outline-secondary {
+    color: black;
+    border-color: black;
+  }
+  
+  .btn-outline-secondary:hover {
+    color: black;
+    border-color: black;
+  }
+  
+  .far.fa-heart {
+    color: black;
+    font-size: 1.2rem;
+  }
+  

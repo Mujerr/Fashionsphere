@@ -13,7 +13,22 @@
       "Carro":"Cart",
       "Cuenta":"Account",
       "OpcionesCatalogo":{
-        
+        "Mujer":"Women",
+        "Hombre":"Men",
+        "Ropa":"Clothes",
+        "Calzado":"Footwear",
+        "Bolsosyaccesorios":"Bags and accessories",
+        "Bellezaycuidadopersonal":"Beauty and personal care",
+        "Accesorios":"Accessories",
+        "Niños":"Child",
+        "Niñas":"Girls",
+        "NiñosChico":"Boys",
+        "Bebes":"Babys",
+        "Hogar":"Home",
+        "Decoracion":"Decoration",
+        "Productosparamascotas":"Pet products",
+        "Personaliza":"customized",
+        "Diseñatupropiaropa":"Create your own clothes"
       }
     }
  }

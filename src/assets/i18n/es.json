@@ -13,7 +13,22 @@
       "Carro":"Cesta",    
       "Cuenta":"Cuenta",
       "OpcionesCatalogo":{
-        
+        "Mujer":"Mujer",
+        "Hombre":"Hombre",
+        "Ropa":"Ropa",
+        "Calzado":"Calzado",
+        "Bolsosyaccesorios":"Bolsos y accesorios",
+        "Bellezaycuidado personal":"Belleza y cuidado personal",
+        "Accesorios":"Accesorios",
+        "Niños":"Niños",
+        "Niñas":"Niñas",
+        "NiñosChico":"Niños",
+        "Bebes":"Bebés",
+        "Hogar":"Hogar",
+        "Decoracion":"Decoracion",
+        "Productosparamascotas":"Productos para mascotas",
+        "Personaliza":"Personazaliza",
+        "Diseñatupropiaropa":"Diseña tu propia ropa"
       }
     }
  }

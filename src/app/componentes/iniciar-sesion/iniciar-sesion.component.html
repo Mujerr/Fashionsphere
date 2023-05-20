@@ -1,1 +1,25 @@
-<p>iniciar-sesion works!</p>
+
+<title>Login</title>
+<div class="background-container">
+  <div class="container">
+    <a routerLink="home" class="volver"><i class="fa-solid fa-arrow-left" style="color: #000000;"></i><strong>Volver</strong></a>
+    <h2>Login</h2>
+    <form (ngSubmit)="loginWithEmail()" #loginForm="ngForm">
+      <div class="mb-3">
+        <label for="email">Email or Username</label>
+        <input type="text" class="form-control" id="email" name="email" [(ngModel)]="email" required>
+      </div>
+      <div class="mb-3">
+        <label for="password">Password</label>
+        <input type="password" class="form-control" id="password" name="password" [(ngModel)]="password" required>
+      </div>
+      <button type="submit" class="btn btn-primary">Login</button>
+    </form>
+
+    <hr>
+
+    <button (click)="loginWithGoogle()" class="btn btn-danger"><i class="fa-brands fa-google fa-xl"></i>Login with Google</button>
+    <br>
+    <p>¿Todavía no tienes cuenta? <strong><a routerLink="/registrarse">Registrate aquí</a></strong></p>   
+  </div>
+</div>

@@ -1,5 +1,5 @@
 
-<app-navbar></app-navbar>
-<div class="container">
+<app-navbar *ngIf="!isLoginPage()"></app-navbar>
+<div [ngClass]="{'container': !isLoginPage()}">
   <router-outlet></router-outlet>
 </div>

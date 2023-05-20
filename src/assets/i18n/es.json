@@ -1,5 +1,7 @@
 {
    "Idioma":"Español",
+   "SimboloPrecio":"€",
+   "tituloHome":"¡Descubre nuestras prendas únicas ahora mismo!",
     "navbar":{
       "Usuario":"Username",
       "Envios":"Envío",

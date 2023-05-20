@@ -15,7 +15,9 @@ import { FormsModule } from '@angular/forms'; // importa FormsModule
 //firebase 
 import { AngularFireModule } from '@angular/fire/compat';
 import { AngularFireStorageModule } from '@angular/fire/compat/storage';
+import { AngularFireAuthModule } from '@angular/fire/compat/auth';
 import { firebaseConfig } from './enviroments/enviroment.config'
+import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
 
 //I18N imports 
 import { HttpClientModule, HttpClient } from '@angular/common/http';
@@ -25,6 +27,8 @@ import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 //imports de servicios
 import { RopaService } from './servicios/ropa.service';
 import { ArticulosComponent } from './componentes/articulos/articulos.component';
+import { CarrouselComponent } from './generales/carrousel/carrousel.component';
+import { TipoRopaComponent } from './componentes/tipo-ropa/tipo-ropa.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -34,13 +38,17 @@ import { ArticulosComponent } from './componentes/articulos/articulos.component'
     RegistrarseComponent,
     CarritoComponent,
     PerfilComponent,
-    ArticulosComponent
+    ArticulosComponent,
+    CarrouselComponent,
+    TipoRopaComponent
   ],
   imports: [
     FormsModule,
     BrowserModule,
+    AngularFirestoreModule,
     AppRoutingModule,
     HttpClientModule,
+    AngularFireAuthModule,
     AngularFireModule.initializeApp(firebaseConfig),
     AngularFireStorageModule,
     TranslateModule.forRoot({
@@ -49,8 +57,7 @@ import { ArticulosComponent } from './componentes/articulos/articulos.component'
         useFactory: (http: HttpClient) => new TranslateHttpLoader(http, './assets/i18n/', '.json'),
         deps: [HttpClient]
       },
-      defaultLanguage: 'es',
-    })
+      })
   ],
   providers: [RopaService],
   bootstrap: [AppComponent]

@@ -11,7 +11,7 @@ import { collection, getDocs, getFirestore } from "firebase/firestore"; // Agreg
   providedIn: 'root'
 })
 export class RopaService {
- 
+
 sacaRopa(){
   //configuracion FIREBASE  
   const firebaseConfig = {
@@ -43,5 +43,7 @@ sacaRopa(){
       });
     });
   }
+
+
 }
   

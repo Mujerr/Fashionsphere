@@ -1,10 +1,6 @@
 import { Component, Input, OnInit, Output } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { RopaService } from 'src/app/servicios/ropa.service';
-import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
-import { Storage, ref, uploadBytes, listAll, getDownloadURL } from '@angular/fire/storage';
-import { AngularFireStorage } from '@angular/fire/compat/storage';
 import { ArticulosComponent } from '../articulos/articulos.component';
 
 @Component({
@@ -14,10 +10,12 @@ import { ArticulosComponent } from '../articulos/articulos.component';
 })
 export class HomeComponent implements OnInit{
   @Input() aticulo: ArticulosComponent | undefined
+  selectedLang = 'es';
   articulos: any[] = [];
 
-  constructor(private translate: TranslateService, private http:HttpClient, private storage: AngularFireStorage, private rs:RopaService) {
-
+  constructor(public translate: TranslateService,private rs:RopaService) {
+    translate.setDefaultLang('es'); 
+    translate.use('es'); 
   }
   ngOnInit(): void {
     this.rs.sacaRopa().subscribe(resp=>{

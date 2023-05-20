@@ -1,5 +1,7 @@
  {
    "Idioma":"English",
+   "SimboloPrecio":"$",
+   "tituloHome":"Discover our unique garments now!",
     "navbar":{
       "Usuario":"Username",
       "Envios":"Shipping",

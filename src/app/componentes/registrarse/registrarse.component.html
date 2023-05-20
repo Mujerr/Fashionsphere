@@ -1,1 +1,32 @@
-<p>registrarse works!</p>
+<div class="container">
+    <div class="row justify-content-center mt-5">
+      <div class="col-md-6">
+        <div class="card">
+          <div class="card-body">
+            <h2 class="card-title text-center mb-4">Registro</h2>
+            <form #registerForm="ngForm" (ngSubmit)="registerWithEmail(registerForm)">
+              <div class="mb-3">
+                <label for="email" class="form-label">Email</label>
+                <input type="email" class="form-control" id="email" name="email" required [(ngModel)]="email">
+              </div>
+              <div class="mb-3">
+                <label for="password" class="form-label">Contraseña</label>
+                <input type="password" class="form-control" id="password" name="password" required [(ngModel)]="password">
+              </div>
+              <div class="mb-3">
+                <label for="phone" class="form-label">Teléfono</label>
+                <input type="text" class="form-control" id="phone" name="phone" required [(ngModel)]="phone">
+              </div>
+              <div class="mb-3">
+                <label for="address" class="form-label">Dirección</label>
+                <input type="text" class="form-control" id="address" name="address" required [(ngModel)]="address">
+              </div>
+              <button type="submit" class="btn btn-primary w-100">Registrarse</button>
+              <button type="button" class="btn btn-danger w-100 mt-3" (click)="registerWithGoogle()">Registrarse con Google</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  

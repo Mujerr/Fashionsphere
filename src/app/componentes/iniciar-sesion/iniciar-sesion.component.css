@@ -64,7 +64,8 @@
     color: black;
     border: 1px black solid;
   }
-  .btn-danger:hover{
+  .btn-danger:hover,
+  .btn-danger:hover .fa-brands {
     background-color: #000000;
     color: #fff;
   }

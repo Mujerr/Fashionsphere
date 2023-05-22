@@ -99,8 +99,20 @@
           <li class="nav-item">
             <a class="nav-link mx-1 text-uppercase" href="#"><i class="fa-solid fa-cart-shopping me-1"></i>{{'navbar.Carro'|translate}}</a>
           </li>
-          <li class="nav-item">
-            <a class="nav-link mx-1 text-uppercase" routerLink="inicioSesion"><i class="fa-solid fa-circle-user me-1"></i> {{'navbar.Cuenta'|translate}}</a>
+
+          <li *ngIf="userLoggedIn" class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              <i class="fa-solid fa-circle-user me-1"></i> {{ 'navbar.Cuenta' | translate }}
+            </a>
+            <ul class="dropdown-menu">
+              <li><a class="dropdown-item" routerLink="editarPerfil">Editar perfil</a></li>
+              <li (click)="logout()"><a class="dropdown-item" >Cerrar sesión</a></li>
+            </ul>
+          </li>
+          <li *ngIf="!userLoggedIn" class="nav-item" routerLink="inicioSesion">
+            <a class="nav-link mx-1 text-uppercase">
+              <i class="fa-solid fa-circle-user me-1"></i> {{ 'navbar.Cuenta' | translate }}
+            </a>
           </li>
         </ul>
       </div>

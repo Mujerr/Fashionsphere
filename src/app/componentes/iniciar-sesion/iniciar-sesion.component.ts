@@ -1,29 +1,37 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
+import { Router } from '@angular/router';
 import firebase from 'firebase/compat/app';
+import Swal from 'sweetalert2'
+
 @Component({
   selector: 'app-iniciar-sesion',
   templateUrl: './iniciar-sesion.component.html',
   styleUrls: ['./iniciar-sesion.component.css']
 })
-export class IniciarSesionComponent {
+export class IniciarSesionComponent{
   email: string ="";
   password: string ="";
 
-  constructor(private afAuth: AngularFireAuth) {}
+  constructor(private afAuth: AngularFireAuth,private router: Router) {}
+
 
   loginWithEmail() {
-    this.afAuth.signInWithEmailAndPassword(this.email, this.password)
-      .then((userCredential) => {
-        // Inicio de sesión exitoso
-        console.log(userCredential);
-        // Realiza alguna acción adicional si es necesario
+    this.afAuth.setPersistence(firebase.auth.Auth.Persistence.LOCAL)
+    .then(() => {
+      return this.afAuth.signInWithEmailAndPassword(this.email, this.password);
+    })
+    .then((credential) => {
+      this.router.navigate(['/home']);
+      console.log('Inicio de sesión exitoso', credential.user);
+    })
+    .catch((error) => {
+      Swal.fire({
+        icon: 'error',
+        title: 'Usuario no encontrado',
+        text: 'Usuario o contraseña incorrectos',
       })
-      .catch((error) => {
-        // Error en el inicio de sesión
-        console.log(error);
-        // Maneja el error de inicio de sesión de acuerdo a tus necesidades
-      });
+    });
   }
 
   loginWithGoogle() {

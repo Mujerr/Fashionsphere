@@ -1,10 +1,20 @@
+<div class="background-container">
 <div class="container">
-    <div class="row justify-content-center mt-5">
-      <div class="col-md-6">
-        <div class="card">
-          <div class="card-body">
+  <a routerLink="home" class="volver"><i class="fa-solid fa-arrow-left" style="color: #000000;"></i><strong>Volver</strong></a>
             <h2 class="card-title text-center mb-4">Registro</h2>
             <form #registerForm="ngForm" (ngSubmit)="registerWithEmail(registerForm)">
+              <div class="mb-3">
+                <label for="Nombre" class="form-label">Nombre</label>
+                <input type="Nombre" class="form-control" id="Nombre" name="Nombre" required [(ngModel)]="nombre">
+              </div>
+              <div class="mb-3">
+                <label for="Apellidos" class="form-label">Apellidos</label>
+                <input type="Apellidos" class="form-control" id="Apellidos" name="Apellidos" required [(ngModel)]="apellidos">
+              </div>
+              <div class="mb-3">
+                <label for="Username" class="form-label">Username</label>
+                <input type="Username" class="form-control" id="Username" name="Username" required [(ngModel)]="username">
+              </div>
               <div class="mb-3">
                 <label for="email" class="form-label">Email</label>
                 <input type="email" class="form-control" id="email" name="email" required [(ngModel)]="email">
@@ -14,19 +24,24 @@
                 <input type="password" class="form-control" id="password" name="password" required [(ngModel)]="password">
               </div>
               <div class="mb-3">
-                <label for="phone" class="form-label">Teléfono</label>
-                <input type="text" class="form-control" id="phone" name="phone" required [(ngModel)]="phone">
+                <label for="address" class="form-label">Dirección</label>
+                <input type="text" class="form-control" id="address" name="address" [(ngModel)]="address">
               </div>
               <div class="mb-3">
-                <label for="address" class="form-label">Dirección</label>
-                <input type="text" class="form-control" id="address" name="address" required [(ngModel)]="address">
+                <label for="phone" class="form-label">Teléfono</label>
+                <input type="text" class="form-control" id="phone" name="phone" [(ngModel)]="phone">
+              </div>
+              <div class="mb-3">
+                <label for="profilePicture" class="form-label">Foto de perfil</label>
+                <input type="file" class="form-control" id="profilePicture" name="profilePicture" (change)="onFileSelected($event)">
               </div>
               <button type="submit" class="btn btn-primary w-100">Registrarse</button>
-              <button type="button" class="btn btn-danger w-100 mt-3" (click)="registerWithGoogle()">Registrarse con Google</button>
+              <button type="button" class="btn btn-danger w-100 mt-3" (click)="registerWithGoogle()"><i class="fa-brands fa-google fa-xl"></i>Registrarse con Google</button>
+              <br>
+              <hr>
+              <p>¿Ya tienes cuenta? <strong><a routerLink="/inicioSesion">Iniciar Sesión</a></strong></p>   
             </form>
-          </div>
-        </div>
-      </div>
-    </div>
   </div>
+</div>
+
   

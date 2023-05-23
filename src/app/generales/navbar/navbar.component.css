@@ -1,0 +1,31 @@
+.logoutli {
+    position: relative;
+  }
+  
+  .text {
+    transition: opacity 0.3s;
+  }
+  
+  .logout {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: #000000;
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+  
+  .logoutli:hover .text {
+    opacity: 0;
+  }
+  
+  .logoutli:hover .logout {
+    opacity: 1;
+  }
+  .user-photo {
+    width: 40px; /* Ajusta el tamaño según tus necesidades */
+    height: 40px;
+    border-radius: 50%; /* Hace que la imagen sea redonda */
+    object-fit: cover; /* Ajusta la imagen dentro del círculo */
+  }

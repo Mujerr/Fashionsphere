@@ -30,7 +30,9 @@
         "Decoracion":"Decoration",
         "Productosparamascotas":"Pet products",
         "Personaliza":"customized",
-        "Diseñatupropiaropa":"Create your own clothes"
+        "Diseñatupropiaropa":"Create your own clothes",
+        "EditarPerfil":"Edit profile",
+        "Salir":"Log Out"
       }
     }
  }

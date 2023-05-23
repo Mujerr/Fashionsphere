@@ -97,16 +97,22 @@
         </ul>
         <ul class="navbar-nav ms-auto ">
           <li class="nav-item">
-            <a class="nav-link mx-1 text-uppercase" href="#"><i class="fa-solid fa-cart-shopping me-1"></i>{{'navbar.Carro'|translate}}</a>
+            <a class="nav-link mx-2 text-uppercase" href="#"><i class="fa-solid fa-heart fa-xl" style="color: #c42121;"></i></a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link mx-1 text-uppercase" href="#"><i class="fa-solid fa-cart-shopping me-1 fa-xl"></i></a>
           </li>
 
           <li *ngIf="userLoggedIn" class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-              <i class="fa-solid fa-circle-user me-1"></i> {{ 'navbar.Cuenta' | translate }}
+              <ng-container *ngIf="userPhoto;">
+                <img [src]="userPhoto" alt="Foto de perfil" class="user-photo">
+                 {{ userName }}
+              </ng-container>            
             </a>
             <ul class="dropdown-menu">
-              <li><a class="dropdown-item" routerLink="editarPerfil">Editar perfil</a></li>
-              <li (click)="logout()"><a class="dropdown-item" >Cerrar sesión</a></li>
+              <li><a class="dropdown-item" routerLink="editarPerfil">{{'navbar.OpcionesCatalogo.EditarPerfil' |translate}} </a></li>
+              <li class="logoutli" (click)="logout()"><a class="dropdown-item"><span class="text">{{'navbar.OpcionesCatalogo.Salir' |translate}}</span><i class="fa-solid fa-right-from-bracket logout"></i></a></li>            
             </ul>
           </li>
           <li *ngIf="!userLoggedIn" class="nav-item" routerLink="inicioSesion">

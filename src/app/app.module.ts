@@ -29,6 +29,7 @@ import { RopaService } from './servicios/ropa.service';
 import { ArticulosComponent } from './componentes/articulos/articulos.component';
 import { CarrouselComponent } from './generales/carrousel/carrousel.component';
 import { TipoRopaComponent } from './componentes/tipo-ropa/tipo-ropa.component';
+import { ArticuloComponent } from './componentes/articulo/articulo.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -40,7 +41,8 @@ import { TipoRopaComponent } from './componentes/tipo-ropa/tipo-ropa.component';
     PerfilComponent,
     ArticulosComponent,
     CarrouselComponent,
-    TipoRopaComponent
+    TipoRopaComponent,
+    ArticuloComponent
   ],
   imports: [
     FormsModule,

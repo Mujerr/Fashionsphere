@@ -1,1 +1,29 @@
-<p>articulo works!</p>
+<br><br>
+<div class="product-details">
+  <div class="product-image">
+    <img [src]="imageUrls" [alt]="articulo.Nombre" />
+  </div>
+  <div class="product-info">
+    <h1 class="product-title">{{ articulo.Nombre }}</h1>
+    <p><strong>REF: </strong>{{ id }}</p>
+    <p class="product-price"><strong>{{ articulo.Precio }}{{ 'SimboloPrecio' | translate }} </strong> <small class="letra">IVA incluido</small> </p>
+    <div class="product-colors">
+      <h3>Available Colors:</h3>
+      <ul>
+        <li *ngFor="let color of articulo.Colores" [ngClass]="{ 'selected': color === selectedColor }">
+          <div class="color-circle" [style.backgroundColor]="color" (click)="selectColor(color)"></div>
+        </li>
+      </ul>
+      <br>
+      <p><strong>Color:</strong> {{ selectedColor }}</p>
+    </div>
+    <br>
+    <p><strong>Descripcion:</strong></p>
+    <p class="product-description">{{ articulo.Descripcion }}</p>
+
+    <div class="product-buttons">
+      <button class="btn btn-primary addCart" type="button">Add to Cart</button>
+      <button class="btn btn-outline-secondary addFav" type="button" (click)="addToFavorites()"> <i class="far fa-heart"></i></button>
+    </div>
+  </div>
+</div>  

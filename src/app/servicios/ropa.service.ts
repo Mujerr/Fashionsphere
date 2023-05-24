@@ -5,12 +5,15 @@ import { Observable } from 'rxjs';
 import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
 import { collection, getDocs, getFirestore } from "firebase/firestore"; // Agrega esta línea
+import { AngularFirestore, DocumentSnapshot } from '@angular/fire/compat/firestore';
+import { map } from 'rxjs/operators';
 
 
 @Injectable({
   providedIn: 'root'
 })
 export class RopaService {
+  constructor(private firestore: AngularFirestore) {}
 
 sacaRopa(){
   //configuracion FIREBASE  
@@ -44,6 +47,9 @@ sacaRopa(){
     });
   }
 
+  getArticulo(id: string): Observable<any> {
+    return this.firestore.collection('ropa').doc(id).valueChanges();
+  }
 
 }
   

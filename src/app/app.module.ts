@@ -30,6 +30,8 @@ import { ArticulosComponent } from './componentes/articulos/articulos.component'
 import { CarrouselComponent } from './generales/carrousel/carrousel.component';
 import { TipoRopaComponent } from './componentes/tipo-ropa/tipo-ropa.component';
 import { ArticuloComponent } from './componentes/articulo/articulo.component';
+import { DefaultImagePipe } from './pipes/default-image.pipe';
+import { FavoritosComponent } from './componentes/favoritos/favoritos.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -42,7 +44,9 @@ import { ArticuloComponent } from './componentes/articulo/articulo.component';
     ArticulosComponent,
     CarrouselComponent,
     TipoRopaComponent,
-    ArticuloComponent
+    ArticuloComponent,
+    DefaultImagePipe,
+    FavoritosComponent
   ],
   imports: [
     FormsModule,

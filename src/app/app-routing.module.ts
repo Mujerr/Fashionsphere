@@ -5,6 +5,7 @@ import { RegistrarseComponent } from './componentes/registrarse/registrarse.comp
 import { IniciarSesionComponent } from './componentes/iniciar-sesion/iniciar-sesion.component';
 import { PerfilComponent } from './componentes/perfil/perfil.component';
 import { ArticuloComponent } from './componentes/articulo/articulo.component';
+import { FavoritosComponent } from './componentes/favoritos/favoritos.component';
 
 const routes: Routes = [
   {path:'home',component:HomeComponent},
@@ -12,6 +13,7 @@ const routes: Routes = [
   {path:'inicioSesion',component:IniciarSesionComponent},
   {path:'perfil',component:PerfilComponent},
   {path:'articulo/:id',component:ArticuloComponent},
+  {path:'favoritos',component:FavoritosComponent},
 
   {path:'**',pathMatch:'full', redirectTo:'home'}
 ];

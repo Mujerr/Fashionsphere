@@ -1,17 +1,18 @@
-<br><br>
 <div class="product-details">
   <div class="product-image">
-    <img [src]="imageUrls" [alt]="articulo.Nombre" />
+    <img [src]="imageUrls[0]" [alt]="articulo?.Nombre" />
   </div>
-  <div class="product-info">
+  <div class="product-info" *ngIf="articulo">
     <h1 class="product-title">{{ articulo.Nombre }}</h1>
     <p><strong>REF: </strong>{{ id }}</p>
-    <p class="product-price"><strong>{{ articulo.Precio }}{{ 'SimboloPrecio' | translate }} </strong> <small class="letra">IVA incluido</small> </p>
+    <p class="product-price"><strong>{{ articulo.Precio }}{{ 'SimboloPrecio' | translate }} </strong><small class="letra">IVA incluido</small></p>
     <div class="product-colors">
       <h3>Available Colors:</h3>
       <ul>
-        <li *ngFor="let color of articulo.Colores" [ngClass]="{ 'selected': color === selectedColor }">
-          <div class="color-circle" [style.backgroundColor]="color" (click)="selectColor(color)"></div>
+        <li *ngFor="let color of articulo.Colores" [ngClass]="{ 'selected': color === selectedColor }"  (click)="selectColor(color)">
+          <div class="color-circle" [style.backgroundColor]="color" (click)="selectColor(color)">
+            <i class="fas fa-check" *ngIf="color === selectedColor || (isFavorito && color === selectedColor)"></i>
+          </div>
         </li>
       </ul>
       <br>
@@ -23,7 +24,14 @@
 
     <div class="product-buttons">
       <button class="btn btn-primary addCart" type="button">Add to Cart</button>
-      <button class="btn btn-outline-secondary addFav" type="button" (click)="addToFavorites()"> <i class="far fa-heart"></i></button>
+      <button (click)="addToFavorites()">
+        <span *ngIf="isFavorito">
+          <i class="fas fa-heart"></i>
+        </span>
+        <span *ngIf="!isFavorito">
+          <i class="far fa-heart"></i>
+        </span>
+      </button>
     </div>
   </div>
-</div>  
+</div>

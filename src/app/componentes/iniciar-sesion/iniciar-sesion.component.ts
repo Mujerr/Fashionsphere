@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
+import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { Router } from '@angular/router';
+import { GoogleAuthProvider } from 'firebase/auth';
 import firebase from 'firebase/compat/app';
 import Swal from 'sweetalert2'
 
@@ -13,7 +15,7 @@ export class IniciarSesionComponent{
   email: string ="";
   password: string ="";
 
-  constructor(private afAuth: AngularFireAuth,private router: Router) {}
+  constructor(private afAuth: AngularFireAuth,private router: Router, private firestore: AngularFirestore) {}
 
 
   loginWithEmail() {
@@ -35,16 +37,37 @@ export class IniciarSesionComponent{
   }
 
   loginWithGoogle() {
-    this.afAuth.signInWithPopup(new firebase.auth.GoogleAuthProvider())
-      .then((userCredential) => {
-        // Inicio de sesión con Google exitoso
-        console.log(userCredential);
-        // Realiza alguna acción adicional si es necesario
-      })
-      .catch((error) => {
-        // Error en el inicio de sesión con Google
-        console.log(error);
-        // Maneja el error de inicio de sesión de acuerdo a tus necesidades
-      });
-  }
+    this.afAuth.signInWithPopup(new GoogleAuthProvider())
+    .then((result) => {
+      // Obtener el usuario autenticado
+      const user = result.user;
+      if (user) {
+        // Guardar datos adicionales del usuario en la base de datos
+        const userData = {
+          email: user.email,
+          username:user.email,
+        };
+
+        this.firestore.collection('users').doc(user.uid).set(userData)
+          .then(() => {
+            this.router.navigate(['/home']);
+            // Aquí puedes redirigir al usuario a otra página o realizar otras acciones
+          })
+          .catch((error) => { this.errorRegistro(); });
+
+      } else {
+        this.errorRegistro();
+      }
+    })
+    .catch((error) => {
+      this.errorRegistro();
+    });
+    }
+    
+    errorRegistro(){
+      Swal.fire({
+        icon: 'error',
+        title: 'no se ha podido iniciar sesion con el usuario',
+      }) 
+    }
 }

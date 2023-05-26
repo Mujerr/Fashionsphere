@@ -118,7 +118,6 @@ export class RegistrarseComponent {
       .then((result) => {
         // Obtener el usuario autenticado
         const user = result.user;
-        const profilePicture = user?.photoURL
         if (user) {
           // Guardar datos adicionales del usuario en la base de datos
           const userData = {
@@ -128,7 +127,6 @@ export class RegistrarseComponent {
             nombre:this.nombre,
             apellidos:this.apellidos,
             username:user.email,
-            profilePicture: profilePicture
           };
   
           this.firestore.collection('users').doc(user.uid).set(userData)

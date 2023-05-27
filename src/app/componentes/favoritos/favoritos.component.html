@@ -1,1 +1,19 @@
-<p>favoritos works!</p>
+<br><br><br>
+<div class="row row-cols-1 row-cols-md-3 g-4">
+<div *ngFor="let prenda of prendasFavoritas">
+  <div class="card h-100" [routerLink]="['/articulo', prenda.id]">
+    <div class="card-img-top position-relative">
+      <img [src]="prenda.imageUrl" class="card-img-top" [alt]="prenda.Nombre">
+    </div>
+    <br>
+    <div class="card-body">
+      <h5 class="card-title">{{prenda.Nombre}}</h5>
+      <p class="card-price">{{prenda.Precio}}{{'SimboloPrecio' | translate}}</p>
+      <div class="d-grid gap-2">
+        <button class="btn btn-primary" type="button">Comprar</button>
+        <button class="btn btn-outline-secondary" type="button"><i class="far fa-heart"></i></button>
+      </div>
+    </div>
+  </div>
+</div>
+</div>

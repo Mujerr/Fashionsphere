@@ -1,12 +1,11 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
-
+import { Observable, of, combineLatest } from 'rxjs';
 import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
 import { collection, getDocs, getFirestore } from "firebase/firestore"; // Agrega esta línea
-import { AngularFirestore, DocumentSnapshot } from '@angular/fire/compat/firestore';
-import { map } from 'rxjs/operators';
+import { AngularFirestore } from '@angular/fire/compat/firestore';
+import { map,mergeMap } from 'rxjs/operators';
 
 
 @Injectable({
@@ -49,6 +48,64 @@ sacaRopa(){
 
   getArticulo(id: string): Observable<any> {
     return this.firestore.collection('ropa').doc(id).valueChanges();
+  }
+
+  
+  getPrendasFavoritasByUserId(userId: string): Observable<any[]> {
+    return this.firestore.collection('favoritosGuardado')
+      .doc(userId)
+      .snapshotChanges()
+      .pipe(
+        map(snapshot => {
+          const data = snapshot.payload.data() as { [key: string]: { colors: string[] } };
+          const prendas: Observable<any>[] = [];
+  
+          if (data) {
+            for (const prendaId in data) {
+              if (data.hasOwnProperty(prendaId)) {
+                const colors = data[prendaId].colors;
+  
+                colors.forEach(color => {
+                  const prenda$ = this.getPrendaById(prendaId).pipe(
+                    map(prenda => {
+                      return {
+                        id: prendaId,
+                        userId: userId,
+                        prendaId: prendaId,
+                        color: color,
+                        ...prenda
+                      };
+                    })
+                  );
+  
+                  prendas.push(prenda$);
+                });
+              }
+            }
+          }
+  
+          return prendas.length > 0 ? combineLatest(prendas) : of([]);
+        }),
+        mergeMap(observables => {
+          return observables;
+        })
+      );
+  }
+
+  // Obtiene los datos de una prenda por ID
+  getPrendaById(id: string): Observable<any> {
+    return this.firestore.collection('ropa').doc(id).snapshotChanges()
+      .pipe(
+        map(snapshot => {
+          const data = snapshot.payload.data();
+          const snapshotId = snapshot.payload.id;
+          if (typeof data === 'object' && data !== null) {
+            return { id: snapshotId, ...data };
+          } else {
+            return { id: snapshotId };
+          }
+        })
+      );
   }
 
 }

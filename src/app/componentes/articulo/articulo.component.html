@@ -23,7 +23,7 @@
     <p class="product-description">{{ articulo.Descripcion }}</p>
 
     <div class="product-buttons">
-      <button class="btn btn-primary addCart" type="button">Add to Cart</button>
+      <button class="btn btn-primary addCart" type="button" (click)="addToCard(articulo.Precio)">Add to Cart</button>
       <button (click)="addToFavorites()">
         <span *ngIf="isFavorito">
           <i class="fas fa-heart"></i>

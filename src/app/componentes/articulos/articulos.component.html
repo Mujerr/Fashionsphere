@@ -1,17 +1,26 @@
-<div class="card h-100"  [routerLink]="['/articulo', articulos.id]">
+<div class="card h-100">
+  <div [routerLink]="['/articulo', articulos.id]">
   <div class="card-img-top position-relative">
     <img [src]="imageUrls" class="card-img-top" alt="{{imageUrls}}">
     <div class="color-selector position-absolute">
-      <button type="button" class="btn btn-outline-secondary rounded-circle me-2 active btn-circle" *ngFor="let color of colores" [style.backgroundColor]="color" (mouseenter)='selectColor(color)' ></button>
+      <button type="button" class="btn btn-outline-secondary rounded-circle me-2 active btn-circle" *ngFor="let color of colores" [style.backgroundColor]="color" (mouseenter)='selectColor(color)'></button>
     </div>
   </div>
   <br>
-    <div class="card-body">
-      <h5 class="card-title">{{articulos.Nombre}}</h5>
-      <p class="card-price">{{articulos.Precio}}{{'SimboloPrecio' | translate}}</p>
-      <div class="d-grid gap-2">
-        <button class="btn btn-primary" type="button">Comprar</button>
-        <button class="btn btn-outline-secondary" type="button"><i class="far fa-heart"></i></button>
-      </div>
-    </div>
+  <div class="card-body">
+    <h5 class="card-title">{{articulos.Nombre}}</h5>
+    <p class="card-price">{{articulos.Precio}}{{'SimboloPrecio' | translate}}</p>
   </div>
+</div>
+    <div class="d-grid gap-2">
+      <button class="btn btn-primary" type="button">Comprar</button>
+      <button class="btn btn-outline-secondary" type="button" (click)="addToFavorites(articulos.id)">
+        <span *ngIf="isFavorito">
+          <i class="fa fa-heart" style="color: red;"></i>
+        </span>
+        <span *ngIf="!isFavorito">
+          <i class="fa fa-heart"></i>
+        </span>
+      </button>
+    </div>
+</div>

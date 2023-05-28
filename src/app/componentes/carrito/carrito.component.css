@@ -1,0 +1,78 @@
+.carrito {
+    background-color: #fff;
+    border: 1px solid #ddd;
+    padding: 20px;
+    margin: 20px;
+    max-width: 600px;
+  }
+  
+  .carrito-shein h3 {
+    margin-top: 0;
+    margin-bottom: 10px;
+  }
+  
+  .lista-articulos {
+    margin-bottom: 20px;
+  }
+  
+  .articulo {
+    display: flex;
+    margin-bottom: 20px;
+  }
+  
+  .imagen-articulo {
+    flex-basis: 30%;
+    margin-right: 20px;
+  }
+  
+  .imagen-articulo img {
+    width: 100%;
+    height: auto;
+  }
+  
+  .info-articulo {
+    flex-grow: 1;
+  }
+  
+  .nombre-articulo {
+    margin: 0;
+    font-size: 16px;
+  }
+  
+  .precio-articulo {
+    margin: 5px 0;
+    color: #888;
+  }
+  
+  .cantidad-articulo {
+    display: flex;
+    align-items: center;
+  }
+  
+  .cantidad-articulo input {
+    width: 60px;
+    padding: 5px;
+    margin-right: 10px;
+  }
+  
+  .btn-eliminar-articulo {
+    background-color: transparent;
+    border: none;
+    color: #888;
+    cursor: pointer;
+  }
+  
+  .total {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+  }
+  
+  .etiqueta-total {
+    margin-right: 10px;
+  }
+  
+  .precio-total {
+    font-weight: bold;
+    font-size: 18px;
+  }

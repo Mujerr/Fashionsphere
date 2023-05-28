@@ -95,24 +95,27 @@
             <a class="nav-link mx-2 text-uppercase" href="#">{{'navbar.Sobre' |translate}}</a>
           </li>
         </ul>
-        <ul class="navbar-nav ms-auto ">
-          <li class="nav-item">
-            <a class="nav-link mx-2 text-uppercase" routerLink="favoritos"><i class="fa-solid fa-heart fa-xl" style="color: #c42121;"></i></a>
+        <ul class="navbar-nav ms-auto">
+          <li *ngIf="userLoggedIn" class="nav-item"  style="margin-top: 10px;">
+            <a class="nav-link mx-2 text-uppercase" routerLink="favoritos">
+              <i class="fa-solid fa-heart fa-xl" style="color: #c42121;"></i>
+            </a>
           </li>
-          <li class="nav-item">
-            <a class="nav-link mx-1 text-uppercase" href="#"><i class="fa-solid fa-cart-shopping me-1 fa-xl"></i></a>
+          <li *ngIf="userLoggedIn" class="nav-item"  style="margin-top: 10px;">
+            <a class="nav-link mx-1 text-uppercase" routerLink="carrito">
+              <i class="fa-solid fa-cart-shopping me-1 fa-xl"></i>
+            </a>
           </li>
-
-          <li *ngIf="userLoggedIn" class="nav-item dropdown">
+          <li class="nav-item dropdown" *ngIf="userLoggedIn">
             <a class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
               <ng-container *ngIf="userPhoto;">
                 <img [src]="userPhoto | defaultImage" alt="Foto de perfil" class="user-photo">
-                 {{ userName }}
+                {{ userName }}
               </ng-container>            
             </a>
             <ul class="dropdown-menu">
-              <li><a class="dropdown-item" routerLink="editarPerfil">{{'navbar.OpcionesCatalogo.EditarPerfil' |translate}} </a></li>
-              <li class="logoutli" (click)="logout()"><a class="dropdown-item"><span class="text">{{'navbar.OpcionesCatalogo.Salir' |translate}}</span><i class="fa-solid fa-right-from-bracket logout"></i></a></li>            
+              <li><a class="dropdown-item" routerLink="editarPerfil">{{'navbar.OpcionesCatalogo.EditarPerfil' |translate}}</a></li>
+              <li class="logoutli" (click)="logout()"><a class="dropdown-item"><span class="text">{{'navbar.OpcionesCatalogo.Salir' |translate}}</span><i class="fa-solid fa-right-from-bracket logout"></i></a></li>
             </ul>
           </li>
           <li *ngIf="!userLoggedIn" class="nav-item" routerLink="inicioSesion">

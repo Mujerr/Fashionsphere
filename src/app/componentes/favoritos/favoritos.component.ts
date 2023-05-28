@@ -1,5 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
+import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { AngularFireStorage } from '@angular/fire/compat/storage';
 import { RopaService } from 'src/app/servicios/ropa.service';
 
@@ -15,7 +16,9 @@ export class FavoritosComponent implements OnInit {
   constructor(
     private afAuth: AngularFireAuth,
     private favoritosService: RopaService,
-    private storage:AngularFireStorage
+    private storage:AngularFireStorage,
+    private firestore: AngularFirestore,
+
   ) { }
 
   ngOnInit(): void {
@@ -39,7 +42,47 @@ export class FavoritosComponent implements OnInit {
   
     ref.getDownloadURL().subscribe(url => {
       prenda.imageUrl = url; // Asignar la URL directamente a la prenda correspondiente
-      console.log(prenda.imageUrl);
     });
+  }
+
+  async BorrarColorFavorito(id: string, color: string): Promise<void> {
+    const user = await this.afAuth.currentUser;
+    if (user) {
+      const userId = user.uid;
+      const favoritosRef = this.firestore.collection('favoritosGuardado').doc(userId);
+  
+      if (id) {
+        favoritosRef.get().subscribe(snapshot => {
+          const data: any = snapshot.data();
+          if (data && typeof data === 'object') {
+            const colors = data[id]?.colors || [];
+  
+            if (colors.includes(color)) {
+              // Si el color ya está en favoritos, eliminarlo
+              const updatedColors = colors.filter((c: string) => c !== color);
+              const newData = {
+                ...data,
+                [id]: {
+                  colors: updatedColors
+                }
+              };
+              favoritosRef.set(newData).then(() => {
+                console.log('Color eliminado de favoritos correctamente');
+              }).catch(error => {
+                console.log('Error al eliminar color de favoritos:', error);
+              });
+            } else {
+              console.log('El color no está en favoritos');
+            }
+          } else {
+            console.log('No hay datos de favoritos');
+          }
+        });
+      } else {
+        console.log('ID de artículo no válido');
+      }
+    } else {
+      console.log('No se ha encontrado el usuario autenticado');
+    }
   }
 }

@@ -18,11 +18,7 @@ export class HomeComponent implements OnInit{
     translate.use('es'); 
   }
   ngOnInit(): void {
-    this.rs.sacaRopa().subscribe(resp=>{
-      this.articulos = resp
-    });
-
-
+    this.rs.sacaRopa().subscribe(resp=>{ this.articulos = resp });
   }
 }
 

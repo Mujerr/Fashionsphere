@@ -17,9 +17,13 @@ export class ArticuloComponent implements OnInit {
   articulo: any; // Propiedad para almacenar los datos del artículo
   selectedColor: string = ''; // Color seleccionado
   isFavorito = false;
-
+  prenda: any; // Variable que contiene los datos de la prenda seleccionada
+  tallaSeleccionada: string = ''; // Variable para almacenar la talla seleccionada
+  mostrarUnidades: boolean = false; // Variable para controlar la visualización de las unidades restantes
   @Input() colores: string | undefined;
   initialFavoriteState = false;
+  isAddToCartDisabled = false; // Estado del botón "Add to Cart"
+
 
   constructor(private rs: RopaService, 
               private storage: AngularFireStorage, 
@@ -44,16 +48,16 @@ export class ArticuloComponent implements OnInit {
       const ref = this.storage.ref(`Ropa/${this.id}`);
       const result = await ref.listAll().toPromise();
       const items = result?.items;
-    
+  
       if (items) {
         const promises: Promise<string>[] = items.map((item) => item.getDownloadURL());
         const urls = await Promise.all(promises);
-    
+  
         this.imageUrls = urls;
         const storedColor = localStorage.getItem('selectedColor');
         this.selectedColor = storedColor || this.articulo.Colores[0];
         this.updateSelectedColor();
-    
+  
         this.checkFavorite();
       }
     }
@@ -63,7 +67,6 @@ export class ArticuloComponent implements OnInit {
     this.updateSelectedColor();
     localStorage.setItem('selectedColor', color); // Almacenar el color seleccionado en el localStorage
     this.reloadPage(); // Llamar al método reloadPage para recargar la página
-
   }
 
   private updateSelectedColor() {
@@ -72,6 +75,30 @@ export class ArticuloComponent implements OnInit {
       this.imageUrls = [url]; // Actualizar la lista de URLs de imágenes
     });
   }
+
+  selectTalla(talla: string) {
+    this.tallaSeleccionada = talla;
+    this.mostrarUnidades = true;
+    this.checkAddToCartState();
+  }
+
+  getTallasKeys(tallas: any) {
+    return Object.keys(tallas);
+  }
+
+  isTallaSeleccionada() {
+    return this.tallaSeleccionada !== '';
+  }
+
+  hayUnidadesDisponibles() {
+    return this.isTallaSeleccionada() && this.articulo.Tallas[this.tallaSeleccionada] > 0;
+  }
+
+  checkAddToCartState() {
+    this.isAddToCartDisabled = !this.isTallaSeleccionada() || !this.hayUnidadesDisponibles();
+  }
+
+
 
   async addToFavorites(): Promise<void> {
     const user = await this.afAuth.currentUser;
@@ -174,8 +201,7 @@ export class ArticuloComponent implements OnInit {
       }
     }
   } 
-// Añadir a la cesta
-// Añadir a la cesta
+//Añadir a la cesta
 async addToCard(precio: number): Promise<void> {
   const user = await this.afAuth.currentUser;
   if (user) {
@@ -184,7 +210,7 @@ async addToCard(precio: number): Promise<void> {
 
     if (this.id) {
       const idValue = this.id;
-      carritoRef.get().subscribe(snapshot => {
+      carritoRef.get().subscribe((snapshot) => {
         const data: any = snapshot.data();
         if (data && typeof data === 'object') {
           const item = data[idValue];
@@ -192,78 +218,85 @@ async addToCard(precio: number): Promise<void> {
 
           if (item) {
             // El artículo ya existe en el carrito
-            const colors = item.colors || [];
-            const quantity = item.quantity || 0;
-            const total = item.total || 0;
+            const cartItems = item.cartItems || [];
 
-            if (colors.includes(this.selectedColor)) {
-              // Si el color ya está en el carrito, aumentar la cantidad del color seleccionado
-              const updatedColors = [...colors];
-              const colorIndex = updatedColors.indexOf(this.selectedColor);
-              updatedColors.splice(colorIndex, 1); // Eliminar el color existente
-              updatedColors.push(this.selectedColor); // Agregarlo nuevamente al final del array
+            const updatedCartItems = [...cartItems];
+            const existingItemIndex = updatedCartItems.findIndex( 
+              (cartItem: any) => cartItem.id === idValue && cartItem.color === this.selectedColor && cartItem.talla === this.tallaSeleccionada);
 
-              const updatedQuantities = { ...item.quantities }; // Copiar el objeto de cantidades existente
-              updatedQuantities[this.selectedColor]++; // Incrementar la cantidad del color seleccionado
-
-              updatedItem = {
-                ...item,
-                colors: updatedColors,
-                quantities: updatedQuantities,
-                quantity: quantity + 1,
-                total: total + precio
-              };
+            if (existingItemIndex !== -1) {
+              // Si el artículo con el mismo color y talla ya existe en el carrito, actualizar la cantidad
+              const existingItem = updatedCartItems[existingItemIndex];
+              existingItem.cantidad += 1;
             } else {
-              // Si el color no está en el carrito, agregarlo con una cantidad inicial de 1
-              const updatedColors = [...colors, this.selectedColor];
-              const updatedQuantities = { ...item.quantities, [this.selectedColor]: 1 };
-
-              updatedItem = {
-                ...item,
-                colors: updatedColors,
-                quantities: updatedQuantities,
-                quantity: quantity + 1,
-                total: total + precio
+              // Si el artículo con el mismo color y talla no existe en el carrito, agregarlo
+              const newItem = {
+                id: idValue,
+                color: this.selectedColor,
+                talla: this.tallaSeleccionada,
+                cantidad: 1,
               };
+              updatedCartItems.push(newItem);
             }
+
+            updatedItem = {
+              ...item,
+              cartItems: updatedCartItems,
+              total: item.total + precio,
+            };
           } else {
-            // El artículo no existe en el carrito, agregarlo con el color y cantidad inicial
-            const updatedItem = {
-              colors: [this.selectedColor],
-              quantities: { [this.selectedColor]: 1 },
-              quantity: 1,
-              total: precio
+            // El artículo no existe en el carrito, agregarlo con el color, talla y cantidad inicial
+            const newItem = {
+              id: idValue,
+              color: this.selectedColor,
+              talla: this.tallaSeleccionada,
+              cantidad: 1,
+            };
+
+            updatedItem = {
+              cartItems: [newItem],
+              total: precio,
             };
           }
 
           const newData = {
             ...data,
-            [idValue]: updatedItem
+            [idValue]: updatedItem,
           };
 
-          carritoRef.set(newData).then(() => {
-            console.log('Artículo agregado al carrito correctamente');
-            this.isFavorito = true;
-          }).catch(error => {
-            console.log('Error al agregar artículo al carrito:', error);
-          });
+          carritoRef
+            .set(newData)
+            .then(() => {
+              console.log('Artículo agregado al carrito correctamente');
+            })
+            .catch((error) => {
+              console.log('Error al agregar artículo al carrito:', error);
+            });
         } else {
-          // No hay datos en el carrito, agregar el artículo con el color y cantidad inicial
+          // No hay datos en el carrito, agregar el artículo con el color, talla y cantidad inicial
+          const newItem = {
+            id: idValue,
+            color: this.selectedColor,
+            talla: this.tallaSeleccionada,
+            cantidad: 1,
+          };
+
           const newData = {
             [idValue]: {
-              colors: [this.selectedColor],
-              quantities: { [this.selectedColor]: 1 },
-              quantity: 1,
-              total: precio
-            }
+              cartItems: [newItem],
+              total: precio,
+            },
           };
 
-          carritoRef.set(newData).then(() => {
-            console.log('Artículo agregado al carrito correctamente');
-            this.isFavorito = true;
-          }).catch(error => {
-            console.log('Error al agregar artículo al carrito:', error);
-          });
+          carritoRef
+            .set(newData)
+            .then(() => {
+              console.log('Artículo agregado al carrito correctamente');
+              this.isFavorito = true;
+            })
+            .catch((error) => {
+              console.log('Error al agregar artículo al carrito:', error);
+            });
         }
       });
     } else {
@@ -274,10 +307,10 @@ async addToCard(precio: number): Promise<void> {
   }
 }
 
-
   private reloadPage(): void {
     this.ngOnInit();
     this.cdr.detectChanges();
   }
+  
   
 }

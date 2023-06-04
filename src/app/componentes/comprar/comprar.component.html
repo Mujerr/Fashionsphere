@@ -1,0 +1,116 @@
+<h1>Confirmación del envío</h1>
+<hr>
+<div class="container">
+  <div class="shipping-address">
+    <h2>Datos de Envío</h2>
+    <div class="info-item">
+      <p class="label">Nombre:</p>
+      <div class="d-flex align-items-center">
+        <p class="m-0">{{ userData?.nombre }}</p>
+        <button class="btn btn-primary ms-2" (click)="editMode.nombre = true">Editar</button>
+      </div>
+    </div>
+    <div *ngIf="editMode.nombre" class="info-item">
+      <p class="label">Nombre:</p>
+      <div class="d-flex align-items-center">
+        <input type="text" class="form-control" [(ngModel)]="userData.nombre">
+        <button class="btn btn-success ms-2" (click)="updateField('nombre')">Guardar</button>
+        <button class="btn btn-secondary ms-2" (click)="cancelEditMode('nombre')">Cancelar</button>
+      </div>
+    </div>
+    <div class="info-item">
+      <p class="label">Apellidos:</p>
+      <div class="d-flex align-items-center">
+        <p class="m-0">{{ userData?.apellidos }}</p>
+        <button class="btn btn-primary ms-2" (click)="editMode.apellidos = true">Editar</button>
+      </div>
+    </div>
+
+    <div *ngIf="editMode.apellidos" class="info-item">
+      <p class="label">Apellidos:</p>
+      <div class="d-flex align-items-center">
+        <input type="text" class="form-control" [(ngModel)]="userData.apellidos">
+        <button class="btn btn-success ms-2" (click)="updateField('apellidos')">Guardar</button>
+        <button class="btn btn-secondary ms-2" (click)="cancelEditMode('apellidos')">Cancelar</button>
+      </div>
+    </div>
+    <div class="info-item">
+      <p class="label">Teléfono:</p>
+      <div class="d-flex align-items-center">
+        <p class="m-0">{{ userData?.phone }}</p>
+        <button class="btn btn-primary ms-2" (click)="editMode.phone = true">Editar</button>
+      </div>
+    </div>
+    <div *ngIf="editMode.phone" class="info-item">
+      <p class="label">Teléfono:</p>
+      <div class="d-flex align-items-center">
+        <input type="text" class="form-control" [(ngModel)]="userData.phone">
+        <button class="btn btn-success ms-2" (click)="updateField('phone')">Guardar</button>
+        <button class="btn btn-secondary ms-2" (click)="cancelEditMode('phone')">Cancelar</button>
+      </div>
+    </div>
+    <div class="info-item">
+      <p class="label">Dirección:</p>
+      <div class="d-flex align-items-center">
+        <p class="m-0">{{ userData?.address }}</p>
+        <button class="btn btn-primary ms-2" (click)="editMode.address = true">Editar</button>
+      </div>
+    </div>
+    <div *ngIf="editMode.address" class="info-item">
+      <p class="label">Dirección:</p>
+      <div class="d-flex align-items-center">
+        <input type="text" class="form-control" [(ngModel)]="userData.address">
+        <button class="btn btn-success ms-2" (click)="updateField('address')">Guardar</button>
+        <button class="btn btn-secondary ms-2" (click)="cancelEditMode('address')">Cancelar</button>
+      </div>
+    </div>
+    <div class="info-item">
+      <p class="label">Email:</p>
+      <div class="d-flex align-items-center">
+        <p class="m-0">{{ userData?.email }}</p>
+        <button class="btn btn-primary ms-2" (click)="editMode.email = true">Editar</button>
+      </div>
+    </div>
+    <div *ngIf="editMode.email" class="info-item">
+      <p class="label">Email:</p>
+      <div class="d-flex align-items-center">
+        <input type="text" class="form-control" [(ngModel)]="userData.email">
+        <button class="btn btn-success ms-2" (click)="updateField('email')">Guardar</button>
+        <button class="btn btn-secondary ms-2" (click)="cancelEditMode('email')">Cancelar</button>
+      </div>
+    </div>
+  </div>
+  <div class="payment-method">
+    <h2>Forma de Pago</h2>
+    <div class="info-item">
+      <span class="label">Pago:</span>
+      <br>
+      <div>
+        <p *ngIf="showErrorMessage" class="error-message">Por favor, seleccione un método de pago.</p>
+        <br>
+        <label for="paypal">            
+          <input type="radio" id="paypal" name="payment" value="paypal" [(ngModel)]="paypalSelected" (change)="validatePaymentSelection()">
+          <img src="assets/img/pago/logo_paypal.png" alt="PayPal">Paypal
+        </label>
+        <label for="tarjeta">
+          <input type="radio" id="tarjeta" name="payment" value="tarjeta" [(ngModel)]="tarjetaSelected" (change)="validatePaymentSelection()">
+          <img src="assets/img/pago/tarjeta_logo.png" alt="Tarjeta"> Tarjeta de Crédito/Débito
+        </label>
+      </div>  
+    </div>
+  </div>
+
+  <div class="order-summary">
+    <h2>Resumen del Pedido</h2>
+    <hr>
+    <div class="summary-item">
+      <span>Subtotal:</span>
+      <span>{{ totalFinal }}</span>
+    </div>
+    <div class="summary-item total">
+      <span>Total:</span>
+      <span>{{ totalFinal }}</span>
+    </div>
+    <button (click)="proceedToPayment()" class="btn btn-primary" type="submit">Proceder al Pago</button>
+  </div>
+</div>

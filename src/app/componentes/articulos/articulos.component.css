@@ -16,3 +16,50 @@
 .btn-circle.active .color-border {
   opacity: 1;
 }
+.modal-dialog-horizontal {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+.product-tallas {
+  margin-bottom: 20px;
+}
+
+.talla {
+  display: inline-block;
+  margin-right: 10px;
+}
+
+.talla input[type="radio"] {
+  display: none;
+}
+
+.talla label {
+  display: inline-block;
+  padding: 8px 16px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.talla label:hover {
+  background-color: #f5f5f5;
+}
+
+.talla input[type="radio"]:checked + label {
+  background-color: #000000;
+  color: #fff;
+  border-color: #000000;
+}
+
+.talla .unidades {
+  margin-left: 5px;
+  font-size: 12px;
+  color: #999;
+}
+
+@media (max-width: 576px) {
+  .modal-dialog-horizontal {
+    flex-direction: column;
+  }
+} 

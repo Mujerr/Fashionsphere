@@ -2,7 +2,6 @@ import { ChangeDetectorRef, Component, Input, OnInit } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { AngularFireStorage } from '@angular/fire/compat/storage';
-import { t } from 'i18next';
 import { RopaService } from 'src/app/servicios/ropa.service';
 
 @Component({
@@ -22,6 +21,7 @@ isFavorito = false;
 @Input() articulos:any ={}
 @Input() idRopa:string = "";
 @Input() colores:string | undefined;
+
 constructor(private rs:RopaService,
             private storage: AngularFireStorage,
             private afAuth: AngularFireAuth,  
@@ -40,13 +40,14 @@ constructor(private rs:RopaService,
       });
     });
   }
+
   selectColor(color:string){
       const ref = this.storage.ref(`Ropa/${this.idRopa}/${color}.jpg`);
       ref.getDownloadURL().subscribe(url => {
         this.imageUrls = url;
       });
-        this.selectedColor = color;
-        this.checkFavorite(this.idRopa);
+      this.selectedColor = color;
+      this.checkFavorite(this.idRopa);
   }
   
   async addToFavorites(id:string): Promise<void> {
@@ -151,6 +152,8 @@ constructor(private rs:RopaService,
       }
     }
   } 
+
+
   private reloadPage(): void {
     this.ngOnInit();
     this.cdr.detectChanges();

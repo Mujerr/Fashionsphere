@@ -3,12 +3,12 @@
   <ng-container *ngIf="prendasFavoritas && prendasFavoritas.length > 0; else noFavoritos">
     <div *ngFor="let prenda of prendasFavoritas">
       <div class="card h-100">
-        <div class="card-img-top position-relative">
+        <div class="card-img-top position-relative" [routerLink]="['/articulo', prenda.id]">
           <img [src]="prenda.imageUrl" class="card-img-top" [alt]="prenda.Nombre">
         </div>
         <br>
         <div class="card-body">
-          <h5 class="card-title">{{prenda.Nombre}}</h5>
+          <h5 class="card-title" [routerLink]="['/articulo', prenda.id]">{{prenda.Nombre}}</h5>
           <p class="card-price">{{prenda.Precio}}{{'SimboloPrecio' | translate}}</p>
           <div class="d-grid gap-2">
             <button class="btn btn-primary" type="button">Comprar</button>

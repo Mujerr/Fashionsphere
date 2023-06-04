@@ -1,0 +1,132 @@
+.container {
+  display: flex;
+  flex-wrap: wrap;
+  margin: 20px;
+}
+
+.shipping-address,
+.payment-method,
+.order-summary {
+  flex: 1 1 100%;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  margin-bottom: 20px;
+}
+
+.order-summary {
+  width: auto;
+  margin-left: 0;
+}
+
+h2 {
+  margin: 0 0 10px;
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.info-item {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.label {
+  width: 150px;
+  font-weight: bold;
+}
+
+.edit-button {
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  margin-left: 10px;
+  cursor: pointer;
+}
+
+.payment-method input[type="radio"] {
+  margin-right: 10px;
+}
+
+.summary-item {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.total {
+  font-weight: bold;
+}
+
+.checkout-button {
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  cursor: pointer;
+  width: 100%;
+}
+
+.payment-method label {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+  cursor: pointer;
+}
+
+.payment-method label img {
+  width: 30px;
+  height: 30px;
+  margin-right: 10px;
+}
+
+.payment-method label:hover {
+  opacity: 0.7;
+}
+
+.error-message {
+  visibility: visible;
+  color: red;
+  margin-top: 10px;
+}
+
+/* Estilos para dispositivos móviles */
+@media screen and (max-width: 768px) {
+  .container {
+    margin: 10px;
+  }
+
+  .shipping-address,
+  .payment-method,
+  .order-summary {
+    padding: 10px;
+    margin-bottom: 10px;
+  }
+
+  .label {
+    width: 100px;
+  }
+
+  .edit-button {
+    padding: 3px 8px;
+    margin-left: 5px;
+  }
+
+  .payment-method label img {
+    width: 25px;
+    height: 25px;
+    margin-right: 8px;
+  }
+
+  .checkout-button {
+    padding: 8px 16px;
+  }
+}
+
+/* Estilos para tablets */
+@media screen and (min-width: 768px) and (max-width: 1024px) {
+  .container {
+    margin: 15px;
+  }
+}

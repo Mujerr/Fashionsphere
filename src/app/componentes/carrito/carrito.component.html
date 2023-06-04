@@ -1,25 +1,48 @@
+<body>
+  <header>
+    <h1>Carrito de Compras</h1>
+  </header>
 
-<br><br>
-<div class="carrito">
-    <h3>Carrito de compras</h3>
-    <div class="lista-articulos">
-      <div class="articulo">
-        <div class="imagen-articulo">
-          <img src="ruta-a-la-imagen.jpg" alt="Nombre del artículo">
-        </div>
-        <div class="info-articulo">
-          <h4 class="nombre-articulo">Nombre del artículo</h4>
-          <p class="precio-articulo">$99.99</p>
-          <div class="cantidad-articulo">
-            <input type="number" value="1" min="1">
-            <button class="btn-eliminar-articulo">Eliminar</button>
+  <main>
+    <section class="cart-items">
+      <h2>Artículos en el Carrito</h2>
+
+      <div class="cart-item" *ngIf="Carrito && Carrito.length > 0; else noCarrito">
+        <div class="item-details" *ngFor="let item of Carrito">
+          <img [src]="item.imageUrls" [alt]="item.Nombre">
+          <div class="item-info">
+            <h3>{{ item.Nombre }}</h3>
+            <p>Precio: {{ precio }}</p>
+            <p>
+              Cantidad:
+              <input type="number" [(ngModel)]="item.cantidad" min="1" (ngModelChange)="actualizarCesta(item.Precio, item.id, item.color, item.talla, item.cantidad)">
+              Talla: {{ item.talla }}
+            </p>
+            <br>
+            <button class="remove-button" (click)="eliminarArticulo(item.id, item.color, item.talla, item.cantidad)">Eliminar</button>
           </div>
         </div>
       </div>
-      <!-- Otros artículos del carrito -->
-    </div>
-    <div class="total">
-      <span class="etiqueta-total">Total:</span>
-      <span class="precio-total">$99.99</span>
-    </div>
-  </div>
+    </section>
+
+    <section class="cart-summary">
+      <h2>Resumen del Pedido</h2>
+
+      <div class="summary-item">
+        <span>Subtotal:</span>
+        <span>{{ totalFinal }}</span>
+      </div>
+      <div class="summary-item total">
+        <span>Total:</span>
+        <span>{{ totalFinal }}</span>
+      </div>
+
+      <button class="checkout-button" (click)="comprar()">Proceder al Pago</button>
+    </section>
+  </main>
+</body>
+
+
+<ng-template #noCarrito>
+  <p>Aún no tienes nada en la cesta <i class="fa-solid fa-basket-shopping" style="color: #555555;"></i></p>
+</ng-template>

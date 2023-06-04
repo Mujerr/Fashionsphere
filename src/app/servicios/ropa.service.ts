@@ -92,6 +92,7 @@ sacaRopa(){
       );
   }
 
+
   // Obtiene los datos de una prenda por ID
   getPrendaById(id: string): Observable<any> {
     return this.firestore.collection('ropa').doc(id).snapshotChanges()
@@ -108,5 +109,48 @@ sacaRopa(){
       );
   }
 
+
+  getCarritoByUserId(userId: string): Observable<any[]> {
+    return this.firestore.collection('Carrito')
+      .doc(userId)
+      .snapshotChanges()
+      .pipe(
+        map(snapshot => {
+          const data = snapshot.payload.data() as { [key: string]: { cartItems: any[], total: number } };
+          const prendas: Observable<any>[] = [];
+  
+          if (data) {
+            for (const prendaId in data) {
+              if (data.hasOwnProperty(prendaId)) {
+                const cartItems = data[prendaId].cartItems;
+                const total = data[prendaId].total;
+  
+                cartItems.forEach(item => {
+                  const prenda$ = this.getPrendaById(prendaId).pipe(
+                    map(prenda => {
+                      return {
+                        id: prendaId,
+                        userId: userId,
+                        prendaId: prendaId,
+                        ...item,
+                        ...prenda,
+                        total: total
+                      };
+                    })
+                  );
+  
+                  prendas.push(prenda$);
+                });
+              }
+            }
+          }
+  
+          return prendas.length > 0 ? combineLatest(prendas) : of([]);
+        }),
+        mergeMap(observables => {
+          return observables;
+        })
+      );
+  }
 }
   

@@ -7,6 +7,7 @@ import { PerfilComponent } from './componentes/perfil/perfil.component';
 import { ArticuloComponent } from './componentes/articulo/articulo.component';
 import { FavoritosComponent } from './componentes/favoritos/favoritos.component';
 import { CarritoComponent } from './componentes/carrito/carrito.component';
+import { ComprarComponent } from './componentes/comprar/comprar.component';
 
 const routes: Routes = [
   {path:'home',component:HomeComponent},
@@ -16,6 +17,7 @@ const routes: Routes = [
   {path:'articulo/:id',component:ArticuloComponent},
   {path:'favoritos',component:FavoritosComponent},
   {path:'carrito',component:CarritoComponent},
+  {path:'comprar',component:ComprarComponent},
 
   {path:'**',pathMatch:'full', redirectTo:'home'}
 ];

@@ -1,0 +1,10 @@
+{
+    "/api/paypal": {
+      "target": "https://api-m.sandbox.paypal.com",
+      "secure": true,
+      "changeOrigin": true,
+      "pathRewrite": {
+        "^/api/paypal": ""
+      }
+    }
+  }

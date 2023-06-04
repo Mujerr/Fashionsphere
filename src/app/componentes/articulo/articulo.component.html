@@ -1,3 +1,4 @@
+<br><br>
 <div class="product-details">
   <div class="product-image">
     <img [src]="imageUrls[0]" [alt]="articulo?.Nombre" />
@@ -6,24 +7,37 @@
     <h1 class="product-title">{{ articulo.Nombre }}</h1>
     <p><strong>REF: </strong>{{ id }}</p>
     <p class="product-price"><strong>{{ articulo.Precio }}{{ 'SimboloPrecio' | translate }} </strong><small class="letra">IVA incluido</small></p>
+    <br>
     <div class="product-colors">
       <h3>Available Colors:</h3>
       <ul>
-        <li *ngFor="let color of articulo.Colores" [ngClass]="{ 'selected': color === selectedColor }"  (click)="selectColor(color)">
-          <div class="color-circle" [style.backgroundColor]="color" (click)="selectColor(color)">
+        <li *ngFor="let color of articulo.Colores" [ngClass]="{ 'selected': color === selectedColor }" (click)="selectColor(color)">
+          <div class="color-circle" [style.backgroundColor]="color">
             <i class="fas fa-check" *ngIf="color === selectedColor || (isFavorito && color === selectedColor)"></i>
           </div>
         </li>
       </ul>
-      <br>
-      <p><strong>Color:</strong> {{ selectedColor }}</p>
     </div>
+    <br><br>
+    <div class="product-tallas">
+      <h3>Available Sizes:</h3>
+      <div class="talla" *ngFor="let talla of getTallasKeys(articulo.Tallas)">
+        <input type="radio" name="talla" id="{{ talla }}" [value]="talla" [checked]="talla === tallaSeleccionada" (change)="selectTalla(talla)" />
+        <label for="{{ talla }}">{{ talla }}</label>
+        <span class="unidades" *ngIf="mostrarUnidades && articulo.Tallas[talla] > 0">({{ articulo.Tallas[talla] }} unidades)</span>
+      </div>
+      <p class="error-message" *ngIf="!isTallaSeleccionada() && hayUnidadesDisponibles()">Please select a size</p>
+    </div>
+        
+
     <br>
-    <p><strong>Descripcion:</strong></p>
+    <p><strong>Color:</strong> {{ selectedColor }}</p>
+
+    <p><strong>Description:</strong></p>
     <p class="product-description">{{ articulo.Descripcion }}</p>
 
     <div class="product-buttons">
-      <button class="btn btn-primary addCart" type="button" (click)="addToCard(articulo.Precio)">Add to Cart</button>
+      <button class="btn btn-primary addCart" type="button" (click)="addToCard(articulo.Precio)" [disabled]="!isTallaSeleccionada() || !hayUnidadesDisponibles()">Add to Cart</button>
       <button (click)="addToFavorites()">
         <span *ngIf="isFavorito">
           <i class="fas fa-heart"></i>

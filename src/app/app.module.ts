@@ -33,6 +33,7 @@ import { ArticuloComponent } from './componentes/articulo/articulo.component';
 import { DefaultImagePipe } from './pipes/default-image.pipe';
 import { FavoritosComponent } from './componentes/favoritos/favoritos.component';
 import { ComprarComponent } from './componentes/comprar/comprar.component';
+import { DisenaRopaComponent } from './componentes/disena-ropa/disena-ropa.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -48,7 +49,8 @@ import { ComprarComponent } from './componentes/comprar/comprar.component';
     ArticuloComponent,
     DefaultImagePipe,
     FavoritosComponent,
-    ComprarComponent
+    ComprarComponent,
+    DisenaRopaComponent
   ],
   imports: [
     FormsModule,

@@ -1,4 +1,4 @@
-<br><br><br>
+<!-- <br><br><br>
 <div class="container">
 <div class="row">
     <div class="col-lg-8">
@@ -58,4 +58,37 @@
     </div>
 </div>
 </div>
-  
+   -->
+   <br><br><br>
+   <div class="canvas-container" #canvasContainer></div>
+
+   <div class="options">
+     <h3>Texturas</h3>
+     <div class="texture-type">
+       <label>
+         <input type="radio" name="textureType" [(ngModel)]="selectedTextureType" value="matcap" (change)="applyMatcapTexture()">
+         Matcap
+       </label>
+       <label>
+         <input type="radio" name="textureType" [(ngModel)]="selectedTextureType" value="color" (change)="applyColorTexture()">
+         Color
+       </label>
+     </div>
+   
+     <div class="texture-upload">
+       <label for="textureImage">Subir imagen:</label>
+       <input type="file" id="textureImage" (change)="onTextureImageChange($event)">
+     </div>
+   </div>
+   
+   <div class="parts">
+     <h3>Partes de la sudadera</h3>
+     <ul>
+       <li *ngFor="let part of parts; let i = index" [class.active]="part.visible" (click)="selectPart(part.index)">
+
+    </li>
+     </ul>
+   </div>
+   
+   
+   

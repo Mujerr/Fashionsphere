@@ -20,7 +20,6 @@ const routes: Routes = [
   {path:'carrito',component:CarritoComponent},
   {path:'comprar',component:ComprarComponent},
   {path:'designPrendas',component:DisenaRopaComponent},
-
   {path:'**',pathMatch:'full', redirectTo:'home'}
 ];
 

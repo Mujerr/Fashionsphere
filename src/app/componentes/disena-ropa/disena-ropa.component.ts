@@ -1,20 +1,9 @@
-import { Component, ViewChild, ElementRef, AfterViewInit, OnInit } from '@angular/core';
-import { fabric } from 'fabric';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import * as THREE from 'three';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
-import { DragControls } from 'three/examples/jsm/controls/DragControls';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
+import * as fabric from 'fabric';
 
-interface UploadedImage {
-  partIndex: number;
-  imageUrl: string;
-}
-
-interface Part {
-  name: string;
-  index: number;
-  visible: boolean;
-}
 
 
 @Component({
@@ -23,144 +12,9 @@ interface Part {
   styleUrls: ['./disena-ropa.component.css']
 })
 export class DisenaRopaComponent implements OnInit  {
-  // selectedRopa: string = 'Sudadera';
-  // selectedParte: string = 'delante';
-  // selectedImage: string = '';
-  // uploadedImages: string[] = [];
-  // paintMode: boolean = false;
-  // brushSize: number = 5;
-  // brushColor: string = '#000000';
-  // brushType: string = 'solid';
-  // canvas!: fabric.Canvas;
-
-  // ngOnInit() {
-  //   const canvasElement = document.getElementById('canvas') as HTMLCanvasElement;
-  //   this.canvas = new fabric.Canvas(canvasElement, {
-  //     width: 600,
-  //     height: 600
-  //   });
-  //   this.loadImages();
-  // }
-
-  // loadImages() {
-  //   const imagePath = `assets/img/ropa/${this.selectedRopa}_${this.selectedParte}.jpg`;
-  
-  //   fabric.Image.fromURL(imagePath, (img) => {
-  //     if (img.width !== undefined && img.height !== undefined) {
-  //       const canvasWidth = this.canvas.getWidth();
-  //       const canvasHeight = this.canvas.getHeight();
-  //       const scaleFactor = Math.min(canvasWidth / img.width, canvasHeight / img.height);
-    
-  //       img.scale(scaleFactor);
-  //       this.canvas.setBackgroundImage(img, this.canvas.renderAll.bind(this.canvas));
-  //     }
-  //   });
-  
-  //   this.selectedImage = imagePath;
-  // }
-
-  // handleImageUpload(event: any) {
-  //   const file = event.target.files[0];
-  //   const reader = new FileReader();
-  
-  //   reader.onload = (e) => {
-  //     const imageSrc = e.target?.result as string;
-  //     const imgElement = document.createElement('img');
-  //     imgElement.onload = () => {
-  //       const fabricImage = new fabric.Image(imgElement);
-  //       this.canvas.add(fabricImage);
-  //     };
-  //     imgElement.src = imageSrc;
-  //   };
-  
-  //   reader.readAsDataURL(file);
-  // }
-
-  // removeImage(image: string) {
-  //   const objects = this.canvas.getObjects();
-  //   const fabricImg = objects.find(obj => obj.name === 'uploadedImage') as fabric.Image;
-  
-  //   if (fabricImg && fabricImg.getSrc() === image) {
-  //     this.canvas.remove(fabricImg);
-  
-  //     const index = this.uploadedImages.indexOf(image);
-  //     if (index !== -1) {
-  //       this.uploadedImages.splice(index, 1);
-  //     }
-  //   }
-  // }
-
-  // togglePaintMode() {
-  //   this.paintMode = !this.paintMode;
-  //   if (this.paintMode) {
-  //     this.canvas.isDrawingMode = true;
-  //     this.canvas.freeDrawingBrush.width = this.brushSize;
-  //     this.canvas.freeDrawingBrush.color = this.brushColor;
-  //   } else {
-  //     this.canvas.isDrawingMode = false;
-  //   }
-  // }
-
-  // changeBrushSize(size: number) {
-  //   this.brushSize = size;
-  //   this.canvas.freeDrawingBrush.width = this.brushSize;
-  // }
-  
-  // changeBrushColor(color: string) {
-  //   this.brushColor = color;
-  //   this.canvas.freeDrawingBrush.color = color;
-  // }
-
-
-  // changeBrushType(type: string) {
-  //   this.brushType = type;
-  // }
-
-  // clearDesign() {
-  //   this.canvas.clear();
-  //   this.loadImages();
-  // }
-
-  // clearUploadedImages() {
-  //   this.canvas.getObjects().forEach(obj => {
-  //     if (obj.name === 'uploadedImage') {
-  //       this.canvas.remove(obj);
-  //     }
-  //   });
-
-  //   this.uploadedImages = [];
-  // }
-
-  // startDragging(event: any) {
-  //   const target = event.target;
-  //   if (target.nodeName === 'IMG') {
-  //     const id = target.getAttribute('id');
-  //     const index = this.uploadedImages.findIndex(image => image === id);
-
-  //     if (index !== -1) {
-  //       this.canvas.setActiveObject(this.canvas.getObjects()[index]);
-  //       this.canvas.discardActiveObject();
-
-  //       this.canvas.on('mouse:move', (e: any) => {
-  //         if (!this.canvas.getActiveObject()) return;
-  //         const pointer = this.canvas.getPointer(e.e);
-  //         this.canvas.getActiveObject()?.set({
-  //           left: pointer.x,
-  //           top: pointer.y
-  //         });
-  //         this.canvas.requestRenderAll();
-  //       });
-
-  //       this.canvas.on('mouse:up', () => {
-  //         this.canvas.off('mouse:move');
-  //       });
-  //     }
-  //   }
-  // }
-
-
   @ViewChild('canvasContainer', { static: true })
   canvasContainer!: ElementRef;
+  // canvas!: fabric.Canvas;
 
   scene!: THREE.Scene;
   camera!: THREE.PerspectiveCamera;
@@ -170,17 +24,14 @@ export class DisenaRopaComponent implements OnInit  {
   matcapTexture!: THREE.Texture;
   colorTexture!: THREE.Texture;
   selectedTextureType: string = 'matcap';
-  parts: Part[] = [
-    { name: 'Parte 1', index: 0, visible: true },
-    { name: 'Parte 2', index: 1, visible: true },
-    { name: 'Parte 3', index: 2, visible: true }
-    // Agrega más partes según sea necesario
-  ];
+  activeColor: string = '#000000';
+  activeBrush: string = 'pencil';
 
   constructor() {}
 
   ngOnInit(): void {
     this.initializeScene();
+    // this.initializeCanvas();
   }
 
   initializeScene(): void {
@@ -239,6 +90,61 @@ export class DisenaRopaComponent implements OnInit  {
     this.renderer.render(this.scene, this.camera);
   }
 
+  // initializeCanvas(): void {
+  //   this.canvas = new fabric.Canvas(this.canvasContainer.nativeElement);
+
+  //   const brushOptions = {
+  //     width: 10,
+  //     color: this.activeColor,
+  //     opacity: 1,
+  //     shadow: new fabric.Shadow({
+  //       color: 'rgba(0,0,0,0.3)',
+  //       blur: 5,
+  //       offsetX: 2,
+  //       offsetY: 2
+  //     })
+  //   };
+
+  //   this.canvas.freeDrawingBrush = this.getBrush(this.activeBrush);
+  //   this.canvas.freeDrawingBrush.width = brushOptions.width;
+  //   this.canvas.freeDrawingBrush.color = brushOptions.color;
+  //   this.canvas.freeDrawingBrush.shadow = brushOptions.shadow;
+
+  //   this.canvas.isDrawingMode = true;
+  // }
+
+  // changeColor(event: Event): void {
+  //   const color = (event.target as HTMLInputElement).value;
+  //   this.activeColor = color;
+  //   this.canvas.freeDrawingBrush.color = color;
+  // }
+
+  //   changeBrush(brush: string): void {
+  //   this.activeBrush = brush;
+  //   this.canvas.freeDrawingBrush = this.getBrush(brush);
+  //   this.canvas.freeDrawingBrush.width = 10;
+  //   this.canvas.freeDrawingBrush.color = this.activeColor;
+  //   this.canvas.freeDrawingBrush.shadow = new fabric.Shadow({
+  //     color: 'rgba(0,0,0,0.3)',
+  //     blur: 5,
+  //     offsetX: 2,
+  //     offsetY: 2
+  //   });
+  // }
+
+
+  // getBrush(brushType: string): fabric.BaseBrush {
+  //   switch (brushType) {
+  //     case 'circle':
+  //       return new fabric.CircleBrush();
+  //     case 'spray':
+  //       return new fabric.SprayBrush();
+  //     default:
+  //       return new fabric.PencilBrush(this.canvas);
+  //   }
+  // }
+
+
   onTextureImageChange(event: Event): void {
     const file = (event.target as HTMLInputElement).files?.[0];
     if (file) {
@@ -286,22 +192,13 @@ export class DisenaRopaComponent implements OnInit  {
     }
   }
 
-  selectPart(index: number): void {
-    this.parts.forEach(part => {
-      part.visible = part.index === index;
-    });
 
-    this.model.traverse((child) => {
-      if (child instanceof THREE.Mesh) {
-        const part = this.parts.find(p => p.name === child.name);
-        if (part) {
-          child.visible = part.visible;
-        }
-      }
-    });
 
-    this.renderer.render(this.scene, this.camera);
-  }
+
+
+
+
+
 
 }
 

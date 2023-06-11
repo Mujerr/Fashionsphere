@@ -1,64 +1,4 @@
-<!-- <br><br><br>
-<div class="container">
-<div class="row">
-    <div class="col-lg-8">
-    <div class="design-area">
-        <div class="design-image-container">
-        <canvas id="canvas"></canvas>
-        <div class="upload-section">
-            <input type="file" (change)="handleImageUpload($event)" accept="image/*">
-        </div>
-        </div>
-    </div>
-    </div>
-    <div class="col-lg-4">
-    <div class="options">
-        <select [(ngModel)]="selectedRopa" (change)="loadImages()" class="form-select">
-        <option value="Sudadera">Sudadera</option>
-        <option value="Camiseta">Camiseta</option>
-        <option value="Pantalon">Pantalón</option>
-        </select>
-        <div class="radio-options">
-        <div class="form-check">
-            <input class="form-check-input" type="radio" name="parte" id="delanteRadio" value="delante" [(ngModel)]="selectedParte" (change)="loadImages()">
-            <label class="form-check-label" for="delanteRadio">Delante</label>
-        </div>
-        <div class="form-check">
-            <input class="form-check-input" type="radio" name="parte" id="detrasRadio" value="detras" [(ngModel)]="selectedParte" (change)="loadImages()">
-            <label class="form-check-label" for="detrasRadio">Detrás</label>
-        </div>
-        </div>
-        <div class="paint-options">
-        <button class="btn btn-primary btn-sm" (click)="togglePaintMode()">Pintar</button>
-        <div class="brush-options" *ngIf="paintMode">
-            <div class="brush-options-row">
-              <label for="brush-size">Tamaño del pincel:</label>
-              <input type="number" [(ngModel)]="brushSize" (input)="changeBrushSize(brushSize)">
-            </div>
-            <div class="brush-options-row">
-              <label for="brush-color">Color del pincel:</label>
-              <input type="color" [(ngModel)]="brushColor" (input)="changeBrushColor(brushColor)">
-            </div>
-            <div class="brush-options-row">
-              <button class="btn btn-primary" (click)="changeBrushType('solid')">Pincel sólido</button>
-              <button class="btn btn-primary" (click)="changeBrushType('gradient')">Pincel degradado</button>
-            </div>
-          </div>
-        </div>
-        <button class="btn btn-danger btn-sm" (click)="clearDesign()">Limpiar diseño</button>
-    </div>
-    </div>
-    <div class="additional-images">
-        <h3>Imágenes añadidas:</h3>
-        <button class="btn btn-primary btn-sm" (click)="clearUploadedImages()">Limpiar</button>
-        <div class="image-container" *ngFor="let image of uploadedImages">
-            <img [src]="image" alt="Imagen subida" (mousedown)="startDragging($event)">
-            <button class="btn btn-danger btn-sm" (click)="removeImage(image)">Eliminar</button>
-        </div>
-    </div>
-</div>
-</div>
-   -->
+
    <br><br><br>
    <div class="canvas-container" #canvasContainer></div>
 
@@ -69,6 +9,7 @@
          <input type="radio" name="textureType" [(ngModel)]="selectedTextureType" value="matcap" (change)="applyMatcapTexture()">
          Matcap
        </label>
+       <br>
        <label>
          <input type="radio" name="textureType" [(ngModel)]="selectedTextureType" value="color" (change)="applyColorTexture()">
          Color
@@ -79,16 +20,16 @@
        <label for="textureImage">Subir imagen:</label>
        <input type="file" id="textureImage" (change)="onTextureImageChange($event)">
      </div>
-   </div>
-   
-   <div class="parts">
-     <h3>Partes de la sudadera</h3>
-     <ul>
-       <li *ngFor="let part of parts; let i = index" [class.active]="part.visible" (click)="selectPart(part.index)">
 
-    </li>
-     </ul>
+     <!-- <div class="brush-options">
+      <button (click)="changeBrush('pencil')">Pencil</button>
+      <button (click)="changeBrush('circle')">Circle</button>
+      <button (click)="changeBrush('spray')">Spray</button>
+    </div>
+    
+    <div class="color-options">
+      <input type="color" (input)="changeColor($event)">
+    </div> -->
    </div>
-   
    
    

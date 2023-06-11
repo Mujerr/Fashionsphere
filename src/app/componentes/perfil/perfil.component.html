@@ -1,1 +1,45 @@
-<p>perfil works!</p>
+<br><br>
+<div class="perfil">
+  <div class="foto-perfil" [class.hovered]="isHovered" (mouseenter)="showChangePhoto()" (mouseleave)="hideChangePhoto()">
+    <ng-container *ngIf="fotoPerfilUrl;">
+      <img [src]="fotoPerfilUrl | defaultImage" alt="Foto de perfil">
+    </ng-container>
+    <div class="overlay" *ngIf="isHovered">
+      <div class="icono-cambiar" (click)="openFilePicker()">
+        <i class="fas fa-camera"></i>
+      </div>
+      <div class="texto-cambiar">Cambiar foto de perfil</div>
+    </div>
+  </div>
+  <div class="informacion">
+    <h2>Editar Perfil</h2>
+    <form (ngSubmit)="guardarCambios()">
+      <div class="form-group">
+        <label for="nombre">Nombre</label>
+        <input type="text" id="nombre" [(ngModel)]="nombre" name="nombre">
+      </div>
+      <div class="form-group">
+        <label for="apellidos">Apellidos</label>
+        <input type="text" id="apellidos" [(ngModel)]="apellidos" name="apellidos">
+      </div>
+      <div class="form-group">
+        <label for="username">Username</label>
+        <input type="text" id="username" [(ngModel)]="username" name="username">
+      </div>
+      <div class="form-group">
+        <label for="direccion">Dirección</label>
+        <input type="text" id="direccion" [(ngModel)]="direccion" name="direccion" class="direccion-input">
+      </div>
+
+      <label for="direccion">Telefono</label>
+      <input type="text" id="telefono" [(ngModel)]="telefono" name="telefono" (input)="validateTelefono()" pattern="[0-9]{0,9}">
+      <div class="error-message" *ngIf="telefono.length > 9">
+        Teléfono inválido. Debe tener hasta 9 dígitos numéricos.
+      </div>
+      <br><br>
+      <button type="submit" class="btn-guardar">Guardar Cambios</button>
+    </form>
+  </div>
+</div>
+
+  

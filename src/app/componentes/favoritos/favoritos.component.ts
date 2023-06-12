@@ -2,6 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { AngularFireStorage } from '@angular/fire/compat/storage';
+import { AlertasService } from 'src/app/servicios/alertas.service';
 import { RopaService } from 'src/app/servicios/ropa.service';
 
 @Component({
@@ -18,6 +19,7 @@ export class FavoritosComponent implements OnInit {
     private favoritosService: RopaService,
     private storage:AngularFireStorage,
     private firestore: AngularFirestore,
+    private alerta:AlertasService
 
   ) { }
 
@@ -66,23 +68,16 @@ export class FavoritosComponent implements OnInit {
                   colors: updatedColors
                 }
               };
-              favoritosRef.set(newData).then(() => {
-                console.log('Color eliminado de favoritos correctamente');
-              }).catch(error => {
-                console.log('Error al eliminar color de favoritos:', error);
-              });
-            } else {
-              console.log('El color no está en favoritos');
-            }
+              favoritosRef.set(newData).then(() => {}).catch(error => { this.alerta.errorAgregarFavorito()});
+            } else { this.alerta.errorAgregarFavorito() }
           } else {
             console.log('No hay datos de favoritos');
           }
         });
       } else {
-        console.log('ID de artículo no válido');
-      }
+        this.alerta.errorAgregarFavorito()      }
     } else {
-      console.log('No se ha encontrado el usuario autenticado');
+      this.alerta.noAutenticado()
     }
   }
 }

@@ -4,6 +4,9 @@ import { RopaService } from 'src/app/servicios/ropa.service';
 import { ActivatedRoute } from '@angular/router';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
+import Swal from 'sweetalert2';
+import { AlertasService } from 'src/app/servicios/alertas.service';
+import { UsuarioService } from 'src/app/servicios/usuario.service';
 
 @Component({
   selector: 'app-articulo',
@@ -12,10 +15,9 @@ import { AngularFirestore } from '@angular/fire/compat/firestore';
 })
 export class ArticuloComponent implements OnInit {
   imageUrls: string[] = [];
-  isHovering = false;
-  id: string | null = null;
+  id: string  = '';
   articulo: any; // Propiedad para almacenar los datos del artículo
-  selectedColor: string = ''; // Color seleccionado
+  selectedColor: string | null = ''; // Color seleccionado
   isFavorito = false;
   prenda: any; // Variable que contiene los datos de la prenda seleccionada
   tallaSeleccionada: string = ''; // Variable para almacenar la talla seleccionada
@@ -24,23 +26,32 @@ export class ArticuloComponent implements OnInit {
   initialFavoriteState = false;
   isAddToCartDisabled = false; // Estado del botón "Add to Cart"
 
+  selectedId: string | null = '';
 
   constructor(private rs: RopaService, 
               private storage: AngularFireStorage, 
               private activeRouter: ActivatedRoute,
               private afAuth: AngularFireAuth,  
               private firestore: AngularFirestore,
-              private cdr: ChangeDetectorRef
+              private cdr: ChangeDetectorRef,
+              private alerta: AlertasService,
+              private usuario: UsuarioService 
     ){} 
 
     ngOnInit(): void {
-      this.id = this.activeRouter.snapshot.paramMap.get('id');
-    
+      this.id = this.activeRouter.snapshot.paramMap.get('id') ?? '';
+      this.selectedId = localStorage.getItem('selectedId');
+      this.selectedColor = localStorage.getItem('selectedColor');
       if (this.id) {
         this.rs.getArticulo(this.id).subscribe((data) => {
           this.articulo = data;
           this.loadArticuloData();
         });
+      }
+      const storedId = localStorage.getItem('selectedId');
+      if (storedId !== this.id) {
+        localStorage.removeItem('selectedColor');
+        localStorage.removeItem('selectedId');
       }
     }
 
@@ -62,12 +73,15 @@ export class ArticuloComponent implements OnInit {
       }
     }
 
-  selectColor(color: string) {
-    this.selectedColor = color;
-    this.updateSelectedColor();
-    localStorage.setItem('selectedColor', color); // Almacenar el color seleccionado en el localStorage
-    this.reloadPage(); // Llamar al método reloadPage para recargar la página
-  }
+    selectColor(color: string, id: string) {
+      this.selectedColor = color;
+      this.updateSelectedColor();
+
+      localStorage.setItem('selectedColor', color); // Almacenar el color seleccionado en el localStorage
+      localStorage.setItem('selectedId', id); // Almacenar el ID actual en el localStorage
+  
+      this.reloadPage(); // Llamar al método reloadPage para recargar la página
+    }
 
   private updateSelectedColor() {
     const ref = this.storage.ref(`Ropa/${this.id}/${this.selectedColor}.jpg`);
@@ -100,71 +114,17 @@ export class ArticuloComponent implements OnInit {
 
 
 
-  async addToFavorites(): Promise<void> {
-    const user = await this.afAuth.currentUser;
-    if (user) {
-      const userId = user.uid;
-      const favoritosRef = this.firestore.collection('favoritosGuardado').doc(userId);
+  addToFavorites(): void {
+    const selectedColor = this.selectedColor;
   
-      if (this.id) {
-        const idValue = this.id;
-        favoritosRef.get().subscribe(snapshot => {
-          const data: any = snapshot.data();
-          if (data && typeof data === 'object') {
-            const colors = data[idValue]?.colors || [];
-  
-            if (colors.includes(this.selectedColor)) {
-              // Si el color ya está en favoritos, eliminarlo
-              const updatedColors = colors.filter((color: string) => color !== this.selectedColor);
-              const newData = {
-                ...data,
-                [idValue]: {
-                  colors: updatedColors
-                }
-              };
-              favoritosRef.set(newData).then(() => {
-                console.log('Color eliminado de favoritos correctamente');
-                this.isFavorito = false;
-              }).catch(error => {
-                console.log('Error al eliminar color de favoritos:', error);
-              });
-            } else {
-              // Si el color no está en favoritos, agregarlo
-              const newData = {
-                ...data,
-                [idValue]: {
-                  colors: [...colors, this.selectedColor]
-                }
-              };
-              favoritosRef.set(newData).then(() => {
-                console.log('Color agregado a favoritos correctamente');
-                this.isFavorito = true;
-              }).catch(error => {
-                console.log('Error al agregar color a favoritos:', error);
-              });
-            }
-          } else {
-            // No hay datos de favoritos, agregar el color
-            const newData = {
-              [idValue]: {
-                colors: [this.selectedColor]
-              }
-            };
-            favoritosRef.set(newData).then(() => {
-              console.log('Color agregado a favoritos correctamente');
-              this.isFavorito = true;
-            }).catch(error => {
-              console.log('Error al agregar color a favoritos:', error);
-            });
-          }
-        });
-      } else {
-        console.log('ID de artículo no válido');
-      }
+    if (this.id && selectedColor !== null) {
+      this.usuario.addToFavorites(this.id, selectedColor);
+      this.reloadPage();
     } else {
-      console.log('No se ha encontrado el usuario autenticado');
+      this.alerta.errorAgregarFavorito()
     }
   }
+  
 
   async checkFavorite(): Promise<void> {
     const user = await this.afAuth.currentUser;
@@ -183,11 +143,10 @@ export class ArticuloComponent implements OnInit {
               // Eliminar el ID del documento de favoritos si no hay colores
               delete data[idValue];
               favoritosRef.set(data).then(() => {
-                console.log('ID eliminado de favoritos correctamente');
                 this.isFavorito = false;
                 this.initialFavoriteState = false;
               }).catch(error => {
-                console.log('Error al eliminar ID de favoritos:', error);
+                  this.alerta.errorAgregarFavorito();
               });
             } else {
               this.isFavorito = colors.includes(this.selectedColor);
@@ -201,116 +160,26 @@ export class ArticuloComponent implements OnInit {
       }
     }
   } 
+
+
 //Añadir a la cesta
-async addToCard(precio: number): Promise<void> {
-  const user = await this.afAuth.currentUser;
-  if (user) {
-    const userId = user.uid;
-    const carritoRef = this.firestore.collection('Carrito').doc(userId);
+  async addToCard(precio: number): Promise<void> {
+    const id = this.activeRouter.snapshot.paramMap.get('id');
+    const selectedColor = this.selectedColor;
+    const tallaSeleccionada = this.tallaSeleccionada;
 
-    if (this.id) {
-      const idValue = this.id;
-      carritoRef.get().subscribe((snapshot) => {
-        const data: any = snapshot.data();
-        if (data && typeof data === 'object') {
-          const item = data[idValue];
-          let updatedItem: any;
-
-          if (item) {
-            // El artículo ya existe en el carrito
-            const cartItems = item.cartItems || [];
-
-            const updatedCartItems = [...cartItems];
-            const existingItemIndex = updatedCartItems.findIndex( 
-              (cartItem: any) => cartItem.id === idValue && cartItem.color === this.selectedColor && cartItem.talla === this.tallaSeleccionada);
-
-            if (existingItemIndex !== -1) {
-              // Si el artículo con el mismo color y talla ya existe en el carrito, actualizar la cantidad
-              const existingItem = updatedCartItems[existingItemIndex];
-              existingItem.cantidad += 1;
-            } else {
-              // Si el artículo con el mismo color y talla no existe en el carrito, agregarlo
-              const newItem = {
-                id: idValue,
-                color: this.selectedColor,
-                talla: this.tallaSeleccionada,
-                cantidad: 1,
-              };
-              updatedCartItems.push(newItem);
-            }
-
-            updatedItem = {
-              ...item,
-              cartItems: updatedCartItems,
-              total: item.total + precio,
-            };
-          } else {
-            // El artículo no existe en el carrito, agregarlo con el color, talla y cantidad inicial
-            const newItem = {
-              id: idValue,
-              color: this.selectedColor,
-              talla: this.tallaSeleccionada,
-              cantidad: 1,
-            };
-
-            updatedItem = {
-              cartItems: [newItem],
-              total: precio,
-            };
-          }
-
-          const newData = {
-            ...data,
-            [idValue]: updatedItem,
-          };
-
-          carritoRef
-            .set(newData)
-            .then(() => {
-              console.log('Artículo agregado al carrito correctamente');
-            })
-            .catch((error) => {
-              console.log('Error al agregar artículo al carrito:', error);
-            });
-        } else {
-          // No hay datos en el carrito, agregar el artículo con el color, talla y cantidad inicial
-          const newItem = {
-            id: idValue,
-            color: this.selectedColor,
-            talla: this.tallaSeleccionada,
-            cantidad: 1,
-          };
-
-          const newData = {
-            [idValue]: {
-              cartItems: [newItem],
-              total: precio,
-            },
-          };
-
-          carritoRef
-            .set(newData)
-            .then(() => {
-              console.log('Artículo agregado al carrito correctamente');
-              this.isFavorito = true;
-            })
-            .catch((error) => {
-              console.log('Error al agregar artículo al carrito:', error);
-            });
-        }
-      });
+    if (id && selectedColor !== null && tallaSeleccionada !== null) {
+      await this.usuario.addToCard(id, selectedColor, tallaSeleccionada, precio);
     } else {
-      console.log('ID de artículo no válido');
+      this.alerta.errorAgregarCarrito();
     }
-  } else {
-    console.log('No se ha encontrado el usuario autenticado');
   }
-}
 
   private reloadPage(): void {
     this.ngOnInit();
     this.cdr.detectChanges();
   }
   
+
   
 }

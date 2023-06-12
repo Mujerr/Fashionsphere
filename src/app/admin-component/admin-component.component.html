@@ -1,0 +1,106 @@
+<div class="admin-container">
+    <ul class="nav nav-tabs">
+      <li class="nav-item">
+        <a class="nav-link active" id="users-tab" data-bs-toggle="tab" href="#users">
+          <i class="fas fa-users me-2"></i>Usuarios
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" id="products-tab" data-bs-toggle="tab" href="#products">
+          <i class="fas fa-tshirt me-2"></i>Prendas
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" id="orders-tab" data-bs-toggle="tab" href="#orders">
+          <i class="fas fa-shopping-cart me-2"></i>Pedidos
+        </a>
+      </li>
+    </ul>
+  
+    <div class="tab-content">
+      <div class="tab-pane fade show active" id="users">
+        <!-- Contenido de la pestaña de usuarios -->
+        <h3>Usuarios</h3>
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Nombre</th>
+              <th>Email</th>
+              <th>Acciones</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let user of users">
+              <td>{{ user.username }}</td>
+              <td>{{ user.email }}</td>
+              <td>
+                <button class="btn btn-danger" (click)="borrarUsuario(user.id)">Borrar</button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        </div>
+      </div>
+  
+      <div class="tab-pane fade" id="products">
+        <!-- Contenido de la pestaña de prendas -->
+        <h3>Prendas</h3>
+<table class="table">
+  <thead>
+    <tr>
+      <th>Nombre</th>
+      <th>Descripción</th>
+      <th>Acciones</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let prenda of prendas">
+      <td>{{ prenda.Nombre }}</td>
+      <td>{{ prenda.Descripcion }}</td>
+      <td>
+        <button class="btn btn-primary" (click)="modificarPrenda(prenda.id)">Modificar</button>
+        <button class="btn btn-danger" (click)="borrarPrenda(prenda.id)">Borrar</button>
+      </td>
+    </tr>
+  </tbody>
+</table>
+        </div>
+      </div>
+  
+      <div class="tab-pane fade" id="orders">
+        <!-- Contenido de la pestaña de pedidos -->
+        <h3>Pedidos</h3>
+        <div class="table-responsive">
+          <table class="table table-striped">
+            <thead>
+              <tr>
+                <th>Número de pedido</th>
+                <th>Estado</th>
+                <th>Acciones</th>
+              </tr>
+            </thead>
+            <tbody>
+              <!-- Iterar sobre los pedidos y mostrarlos en filas de la tabla -->
+              <tr>
+                <td>Pedido 1</td>
+                <td>Pendiente</td>
+                <td>
+                  <button class="btn btn-primary" (click)="modificarEstadoPedido(1)">
+                    <i class="fas fa-edit me-1"></i>Modificar Estado
+                  </button>
+                </td>
+              </tr>
+              <tr>
+                <td>Pedido 2</td>
+                <td>Enviado</td>
+                <td>
+                  <button class="btn btn-primary" (click)="modificarEstadoPedido(2)">
+                    <i class="fas fa-edit me-1"></i>Modificar Estado
+                  </button>
+                </td>
+              </tr>
+              <!-- ... más filas de pedidos ... -->
+            </tbody>
+          </table>
+        </div>
+      </div>

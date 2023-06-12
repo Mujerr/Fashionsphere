@@ -95,7 +95,6 @@ export class ComprarComponent {
                       });
                     },
                     (captureError: any) => {
-                      console.error('Error al capturar el pago:', captureError);
                       Swal.fire({
                         icon: 'error',
                         title: 'Error en el pago',
@@ -106,7 +105,6 @@ export class ComprarComponent {
                 }
               });
             } else {
-              console.error('No se pudo abrir la ventana emergente');
               Swal.fire({
                 icon: 'error',
                 title: 'Error en el pago',
@@ -115,7 +113,6 @@ export class ComprarComponent {
             }
           },
           (error: any) => {
-            console.error('Error al crear la orden de pago:', error);
             Swal.fire({
               icon: 'error',
               title: 'Error en el pago',
@@ -125,7 +122,6 @@ export class ComprarComponent {
         );
       },
       (error: any) => {
-        console.error('Error al obtener el token de acceso:', error);
         Swal.fire({
           icon: 'error',
           title: 'Error en el pago',

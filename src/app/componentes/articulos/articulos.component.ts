@@ -2,7 +2,9 @@ import { ChangeDetectorRef, Component, Input, OnInit } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { AngularFireStorage } from '@angular/fire/compat/storage';
+import { AlertasService } from 'src/app/servicios/alertas.service';
 import { RopaService } from 'src/app/servicios/ropa.service';
+import { UsuarioService } from 'src/app/servicios/usuario.service';
 
 @Component({
   selector: 'app-articulos',
@@ -15,7 +17,7 @@ imageUrls: string[] = [];
 isHovering = false;
 initialFavoriteState = false;
 articulo: any; // Propiedad para almacenar los datos del artículo
-selectedColor: string | undefined; // Color seleccionado
+selectedColor: string | null = ''; // Color seleccionado
 isFavorito = false;
 
 @Input() articulos:any ={}
@@ -26,7 +28,9 @@ constructor(private rs:RopaService,
             private storage: AngularFireStorage,
             private afAuth: AngularFireAuth,  
             private firestore: AngularFirestore,
-            private cdr: ChangeDetectorRef){}
+            private cdr: ChangeDetectorRef,
+            private usuario:UsuarioService,
+            private alerta:AlertasService){}
 
   ngOnInit(): void {
     const ref = this.storage.ref(`Ropa/${this.idRopa}`);
@@ -50,71 +54,15 @@ constructor(private rs:RopaService,
       this.checkFavorite(this.idRopa);
   }
   
-  async addToFavorites(id:string): Promise<void> {
-    const user = await this.afAuth.currentUser;
-    if (user) {
-      const userId = user.uid;
-      const favoritosRef = this.firestore.collection('favoritosGuardado').doc(userId);
+  addToFavorites(id:string): void {
+    const selectedColor = this.selectedColor;
   
-      if (id) {
-        const idValue = id;
-        favoritosRef.get().subscribe(snapshot => {
-          const data: any = snapshot.data();
-          if (data && typeof data === 'object') {
-            const colors = data[idValue]?.colors || [];
-  
-            if (colors.includes(this.selectedColor)) {
-              // Si el color ya está en favoritos, eliminarlo
-              const updatedColors = colors.filter((color: string) => color !== this.selectedColor);
-              const newData = {
-                ...data,
-                [idValue]: {
-                  colors: updatedColors
-                }
-              };
-              favoritosRef.set(newData).then(() => {
-                console.log('Color eliminado de favoritos correctamente');
-                this.isFavorito = false;
-              }).catch(error => {
-                console.log('Error al eliminar color de favoritos:', error);
-              });
-            } else {
-              // Si el color no está en favoritos, agregarlo
-              const newData = {
-                ...data,
-                [idValue]: {
-                  colors: [...colors, this.selectedColor]
-                }
-              };
-              favoritosRef.set(newData).then(() => {
-                console.log('Color agregado a favoritos correctamente');
-                this.isFavorito = true;
-              }).catch(error => {
-                console.log('Error al agregar color a favoritos:', error);
-              });
-            }
-          } else {
-            // No hay datos de favoritos, agregar el color
-            const newData = {
-              [idValue]: {
-                colors: [this.selectedColor]
-              }
-            };
-            favoritosRef.set(newData).then(() => {
-              console.log('Color agregado a favoritos correctamente');
-              this.isFavorito = true;
-            }).catch(error => {
-              console.log('Error al agregar color a favoritos:', error);
-            });
-          }
-        });
-      } else {
-        console.log('ID de artículo no válido');
-      }
+    if (id && selectedColor !== null) {
+      this.usuario.addToFavorites(id, selectedColor);
+      this.reloadPage();
     } else {
-      console.log('No se ha encontrado el usuario autenticado');
+      this.alerta.errorAgregarFavorito()
     }
-    this.reloadPage();
   }
 
   async checkFavorite(id:string): Promise<void> {
@@ -134,12 +82,9 @@ constructor(private rs:RopaService,
               // Eliminar el ID del documento de favoritos si no hay colores
               delete data[idValue];
               favoritosRef.set(data).then(() => {
-                console.log('ID eliminado de favoritos correctamente');
                 this.isFavorito = false;
                 this.initialFavoriteState = false;
-              }).catch(error => {
-                console.log('Error al eliminar ID de favoritos:', error);
-              });
+              }).catch(error => { this.alerta.errorAgregarFavorito(); });
             } else {
               this.isFavorito = colors.includes(this.selectedColor);
               this.initialFavoriteState = this.isFavorito;

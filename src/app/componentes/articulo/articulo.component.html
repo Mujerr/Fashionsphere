@@ -11,7 +11,7 @@
     <div class="product-colors">
       <h3>Available Colors:</h3>
       <ul>
-        <li *ngFor="let color of articulo.Colores" [ngClass]="{ 'selected': color === selectedColor }" (click)="selectColor(color)">
+        <li *ngFor="let color of articulo.Colores" [ngClass]="{ 'selected': color === selectedColor }" (click)="selectColor(color, id)">
           <div class="color-circle" [style.backgroundColor]="color">
             <i class="fas fa-check" *ngIf="color === selectedColor || (isFavorito && color === selectedColor)"></i>
           </div>

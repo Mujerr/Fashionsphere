@@ -4,8 +4,9 @@ import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { AngularFireStorage } from '@angular/fire/compat/storage';
 import { Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
-import firebase from 'firebase/compat/app';
 import { User } from 'firebase/auth';
+import { UsuarioService } from 'src/app/servicios/usuario.service';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-navbar',
@@ -15,6 +16,7 @@ import { User } from 'firebase/auth';
 export class NavbarComponent implements OnInit {
   selectedLang = 'es';
   userLoggedIn: boolean | undefined;
+  esAdmin$: Observable<boolean> | undefined;
 
   user: User | null = null;
   userName: string | null = '';
@@ -25,7 +27,8 @@ export class NavbarComponent implements OnInit {
     private afAuth: AngularFireAuth,
     private router: Router,
     private firestore: AngularFirestore,
-    private storage: AngularFireStorage
+    private storage: AngularFireStorage,
+    private usuario: UsuarioService
   ) {
     translate.setDefaultLang('es');
     translate.use('es');
@@ -42,7 +45,8 @@ export class NavbarComponent implements OnInit {
         this.userPhoto = null;
       }
     });
-  }
+      this.esAdmin$ = this.usuario.esUsuarioAdmin();
+    }
 
   getUserData(uid: string) {
     this.firestore.collection('users').doc(uid).get().subscribe(
@@ -80,7 +84,8 @@ export class NavbarComponent implements OnInit {
       console.log('Error al recuperar la foto del usuario:', error);
     }
   }
-  
+
+
   logout() {
     this.afAuth
       .signOut()
@@ -93,4 +98,6 @@ export class NavbarComponent implements OnInit {
         console.log(error);
       });
   }
+
+
 }

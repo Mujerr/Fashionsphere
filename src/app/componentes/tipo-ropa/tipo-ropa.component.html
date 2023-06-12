@@ -1,1 +1,35 @@
-<p>tipo-ropa works!</p>
+<div class="search-container">
+  <input type="text" placeholder="Buscar prendas" [(ngModel)]="busqueda" (input)="filtrarPrendas()">
+</div>
+
+<div class="prendas-container">
+  <div class="sidebar">
+    <h3>Ordenar por:</h3>
+    <ul>
+      <li [class.active]="ordenSeleccionado === 'precioAsc'" (click)="ordenarPorPrecio('asc')">
+        Precio <i class="fas fa-arrow-up"></i>
+      </li>
+      <li [class.active]="ordenSeleccionado === 'precioDesc'" (click)="ordenarPorPrecio('desc')">
+        Precio <i class="fas fa-arrow-down"></i>
+      </li>
+      <li [class.active]="ordenSeleccionado === 'nombreAsc'" (click)="ordenarPorAlfabeto('asc')">
+        Nombre A-Z
+      </li>
+      <li [class.active]="ordenSeleccionado === 'nombreDesc'" (click)="ordenarPorAlfabeto('desc')">
+        Nombre Z-A
+      </li>
+    </ul>
+  </div>
+
+  <div class="prendas-list">
+    <div *ngFor="let prenda of prendas" class="prenda-item">
+      <img [src]="prenda.imagenUrl" alt="Prenda">
+      <h4>{{ prenda.Nombre }}</h4>
+      <p class="precio">Precio: {{ prenda.Precio | currency }}</p>
+    </div>
+    <div *ngIf="prendas.length === 0" class="no-results">
+      <p>No se encontraron prendas.</p>
+    </div>
+  </div>
+</div>
+  

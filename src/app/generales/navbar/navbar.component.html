@@ -40,7 +40,7 @@
         </div>
         <ul class="navbar-nav ms-auto ">
           <li class="nav-item">
-            <a class="nav-link mx-2 text-uppercase active" aria-current="page" href="#">{{'navbar.Ofertas'|translate}}</a>
+            <a class="nav-link mx-2 text-uppercase active" aria-current="page" [routerLink]="['/tipoRopa', 'mujer']">{{'navbar.Ofertas'|translate}}</a>
           </li>
           <li class="nav-item dropdown position-static">
             <a class="nav-link dropdown-toggler text-uppercase" href="#" id="dropdown04" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" >
@@ -52,27 +52,27 @@
                   <div class="col-md-4">
                     <ul class="list-unstyled">
                       <li class="dropdown-header">{{'navbar.OpcionesCatalogo.Mujer' | translate}}</li>
-                      <li><a class="dropdown-item" href="#">{{'navbar.OpcionesCatalogo.Ropa' | translate}}</a></li>
-                      <li><a class="dropdown-item" href="#">{{'navbar.OpcionesCatalogo.Calzado' | translate}}</a></li>
-                      <li><a class="dropdown-item" href="#">{{'navbar.OpcionesCatalogo.Bolsosyaccesorios' | translate}}</a></li>
-                      <li><a class="dropdown-item" href="#">{{'navbar.OpcionesCatalogo.Bellezaycuidadopersonal' | translate}}</a></li>
+                      <li><a class="dropdown-item" [routerLink]="['/tipoRopa','Femenino']">{{'navbar.OpcionesCatalogo.Ropa' | translate}}</a></li>
+                      <li><a class="dropdown-item" [routerLink]="['/tipoRopa','Femenino' ,'calzado']">{{'navbar.OpcionesCatalogo.Calzado' | translate}}</a></li>
+                      <li><a class="dropdown-item" [routerLink]="['/tipoRopa','Femenino' ,'bolsosAccesorios']">{{'navbar.OpcionesCatalogo.Bolsosyaccesorios' | translate}}</a></li>
+                      <li><a class="dropdown-item" [routerLink]="['/tipoRopa','Femenino' ,'belleza']">{{'navbar.OpcionesCatalogo.Bellezaycuidadopersonal' | translate}}</a></li>
                       <li class="dropdown-divider"></li>
                       <li class="dropdown-header">{{'navbar.OpcionesCatalogo.Hombre' | translate}}</li>
-                      <li><a class="dropdown-item" href="#">{{'navbar.OpcionesCatalogo.Ropa' | translate}}</a></li>
-                      <li><a class="dropdown-item" href="#">{{'navbar.OpcionesCatalogo.Calzado' | translate}}</a></li>
-                      <li><a class="dropdown-item" href="#">{{'navbar.OpcionesCatalogo.Accesorios' | translate}}</a></li>
+                      <li><a class="dropdown-item" [routerLink]="['/tipoRopa','Hombre']" >{{'navbar.OpcionesCatalogo.Ropa' | translate}}</a></li>
+                      <li><a class="dropdown-item" [routerLink]="['/tipoRopa','Hombre','calzado']">{{'navbar.OpcionesCatalogo.Calzado' | translate}}</a></li>
+                      <li><a class="dropdown-item" [routerLink]="['/tipoRopa','Hombre', 'accesorios']">{{'navbar.OpcionesCatalogo.Accesorios' | translate}}</a></li>
                     </ul>
                   </div>
                   <div class="col-md-4">
                     <ul class="list-unstyled">
                       <li class="dropdown-header">{{'navbar.OpcionesCatalogo.Niños' | translate}}</li>
-                      <li><a class="dropdown-item" href="#">{{'navbar.OpcionesCatalogo.Niñas' | translate}}</a></li>
-                      <li><a class="dropdown-item" href="#">{{'navbar.OpcionesCatalogo.NiñosChico' | translate}}</a></li>
-                      <li><a class="dropdown-item" href="#">{{'navbar.OpcionesCatalogo.Bebes' | translate}}</a></li>
+                      <li><a class="dropdown-item" [routerLink]="['/tipoRopa', 'niñas']">{{'navbar.OpcionesCatalogo.Niñas' | translate}}</a></li>
+                      <li><a class="dropdown-item" [routerLink]="['/tipoRopa', 'niños']">{{'navbar.OpcionesCatalogo.NiñosChico' | translate}}</a></li>
+                      <li><a class="dropdown-item" [routerLink]="['/tipoRopa', 'bebe']">{{'navbar.OpcionesCatalogo.Bebes' | translate}}</a></li>
                       <li class="dropdown-divider"></li>
                       <li class="dropdown-header">{{'navbar.OpcionesCatalogo.Hogar' | translate}}</li>
-                      <li><a class="dropdown-item" href="#">{{'navbar.OpcionesCatalogo.Decoracion' | translate}}</a></li>
-                      <li><a class="dropdown-item" href="#">{{'navbar.OpcionesCatalogo.Productosparamascotas' | translate}}</a></li>
+                      <li><a class="dropdown-item" [routerLink]="['/tipoRopa', 'decoracion']">{{'navbar.OpcionesCatalogo.Decoracion' | translate}}</a></li>
+                      <li><a class="dropdown-item" [routerLink]="['/tipoRopa', 'mascotas']">{{'navbar.OpcionesCatalogo.Productosparamascotas' | translate}}</a></li>
                     </ul>
                   </div>
                   <div class="col-md-4">
@@ -114,6 +114,10 @@
               </ng-container>            
             </a>
             <ul class="dropdown-menu">
+              <li class="nav-item" *ngIf="esAdmin$ | async">
+                <a class="nav-link" routerLink="admin">Admin</a>
+              </li>
+              
               <li><a class="dropdown-item" routerLink="perfil">{{'navbar.OpcionesCatalogo.EditarPerfil' |translate}}</a></li>
               <li class="logoutli" (click)="logout()"><a class="dropdown-item"><span class="text">{{'navbar.OpcionesCatalogo.Salir' |translate}}</span><i class="fa-solid fa-right-from-bracket logout"></i></a></li>
             </ul>

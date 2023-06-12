@@ -20,6 +20,8 @@ export class RegistrarseComponent {
   nombre: string = '';
   apellidos:string = '';
   username: string = '';
+  direccion:string = '';
+  telefono:string | undefined ;
   profilePicture:string = '';
   selectedProfilePicture: File | null = null;
 

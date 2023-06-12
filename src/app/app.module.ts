@@ -11,6 +11,7 @@ import { CarritoComponent } from './componentes/carrito/carrito.component';
 import { PerfilComponent } from './componentes/perfil/perfil.component';
 //otros imports
 import { FormsModule } from '@angular/forms'; // importa FormsModule
+import { ChangeDetectorRef } from '@angular/core';
 
 //firebase 
 import { AngularFireModule } from '@angular/fire/compat';
@@ -34,6 +35,8 @@ import { DefaultImagePipe } from './pipes/default-image.pipe';
 import { FavoritosComponent } from './componentes/favoritos/favoritos.component';
 import { ComprarComponent } from './componentes/comprar/comprar.component';
 import { DisenaRopaComponent } from './componentes/disena-ropa/disena-ropa.component';
+import { UsuarioService } from './servicios/usuario.service';
+import { AdminComponentComponent } from './admin-component/admin-component.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -50,7 +53,8 @@ import { DisenaRopaComponent } from './componentes/disena-ropa/disena-ropa.compo
     DefaultImagePipe,
     FavoritosComponent,
     ComprarComponent,
-    DisenaRopaComponent
+    DisenaRopaComponent,
+    AdminComponentComponent
   ],
   imports: [
     FormsModule,
@@ -69,7 +73,11 @@ import { DisenaRopaComponent } from './componentes/disena-ropa/disena-ropa.compo
       },
       })
   ],
-  providers: [RopaService],
-  bootstrap: [AppComponent]
+  providers: [
+    {
+      provide: ChangeDetectorRef,
+      useValue: ChangeDetectorRef
+    }
+  ],  bootstrap: [AppComponent]
 })
 export class AppModule { }

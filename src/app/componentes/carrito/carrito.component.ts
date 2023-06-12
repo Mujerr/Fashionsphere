@@ -6,6 +6,7 @@ import { RopaService } from 'src/app/servicios/ropa.service';
 import { AngularFireStorage } from '@angular/fire/compat/storage';
 import { Router } from '@angular/router';
 import { map } from 'rxjs/operators';
+import { AlertasService } from 'src/app/servicios/alertas.service';
 
 @Component({
   selector: 'app-carrito',
@@ -19,7 +20,8 @@ export class CarritoComponent implements OnInit {
     private Service: RopaService,
     private storage: AngularFireStorage,
     private firestore: AngularFirestore,
-    private router: Router
+    private router: Router,
+    private alerta: AlertasService
   ) {}
 
   Carrito: any[] = [];
@@ -35,7 +37,7 @@ export class CarritoComponent implements OnInit {
         this.Service.getCarritoByUserId(userId).subscribe((prendas: any[]) => {
           this.Carrito = prendas;
           this.Carrito.forEach(prenda => {
-            this.selectColor(prenda.prendaId, prenda.color, prenda);
+            this.cargarColor(prenda.prendaId, prenda.color, prenda);
             this.getPrecioPrendaById(prenda.id).subscribe((precio) => {
               this.precio = precio;
             });
@@ -43,11 +45,9 @@ export class CarritoComponent implements OnInit {
         });
       }
     });
-
-
   }
 
-  selectColor(prendaId: string, color: string, prenda: any) {
+  cargarColor(prendaId: string, color: string, prenda: any) {
     const imagePath = `Ropa/${prendaId}/${color}.jpg`;
     const ref = this.storage.ref(imagePath);
   
@@ -110,9 +110,7 @@ export class CarritoComponent implements OnInit {
           }
         });
       }
-    } else {
-      console.log('No se ha encontrado el usuario autenticado');
-    }
+    } else {  this.alerta.noAutenticado() }
   }
 
   async eliminarArticulo(idPrenda: string, color: string, talla: string, cantidad: number): Promise<void> {
@@ -149,20 +147,13 @@ export class CarritoComponent implements OnInit {
   
               carritoRef
                 .set(newData)
-                .then(() => {
-                  console.log('Artículo eliminado del carrito correctamente');
-                  this.actualizarTotalFinal(userId); 
-                })
-                .catch((error) => {
-                  console.log('Error al eliminar artículo del carrito:', error);
-                });
+                .then(() => { this.actualizarTotalFinal(userId); })
+                .catch((error) => { this.alerta.agregarCarrito});
             });
           }
         }
       });
-    } else {
-      console.log('No se ha encontrado el usuario autenticado');
-    }
+    } else { this.alerta.noAutenticado() }
   }
 
   private actualizarTotalFinal(userId: string): void {

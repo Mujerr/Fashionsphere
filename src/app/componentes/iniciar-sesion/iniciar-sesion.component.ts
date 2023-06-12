@@ -25,7 +25,6 @@ export class IniciarSesionComponent{
     })
     .then((credential) => {
       this.router.navigate(['/home']);
-      console.log('Inicio de sesión exitoso', credential.user);
     })
     .catch((error) => {
       Swal.fire({

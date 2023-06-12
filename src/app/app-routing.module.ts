@@ -9,6 +9,8 @@ import { FavoritosComponent } from './componentes/favoritos/favoritos.component'
 import { CarritoComponent } from './componentes/carrito/carrito.component';
 import { ComprarComponent } from './componentes/comprar/comprar.component';
 import { DisenaRopaComponent } from './componentes/disena-ropa/disena-ropa.component';
+import { TipoRopaComponent } from './componentes/tipo-ropa/tipo-ropa.component';
+import { AdminComponentComponent } from './admin-component/admin-component.component';
 
 const routes: Routes = [
   {path:'home',component:HomeComponent},
@@ -20,7 +22,11 @@ const routes: Routes = [
   {path:'carrito',component:CarritoComponent},
   {path:'comprar',component:ComprarComponent},
   {path:'designPrendas',component:DisenaRopaComponent},
-  {path:'**',pathMatch:'full', redirectTo:'home'}
+  {path:'tipoRopa/:genero/:tipo',component:TipoRopaComponent},
+  {path:'tipoRopa/:genero',component:TipoRopaComponent},
+  { path: 'admin', component: AdminComponentComponent },
+  {path:'**',pathMatch:'full', redirectTo:'home'},
+
 ];
 
 @NgModule({

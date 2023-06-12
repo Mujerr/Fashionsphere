@@ -6,13 +6,21 @@ import { getAnalytics } from "firebase/analytics";
 import { collection, getDocs, getFirestore } from "firebase/firestore"; // Agrega esta línea
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { map,mergeMap } from 'rxjs/operators';
+import { AngularFireAuth } from '@angular/fire/compat/auth';
+import { AlertasService } from './alertas.service';
+import { AngularFireStorage } from '@angular/fire/compat/storage';
 
 
 @Injectable({
   providedIn: 'root'
 })
 export class RopaService {
-  constructor(private firestore: AngularFirestore) {}
+  constructor(private firestore: AngularFirestore,
+    private afAuth: AngularFireAuth,
+    private alerta: AlertasService,
+    private storage: AngularFireStorage,
+
+    ) {}
 
 sacaRopa(){
   //configuracion FIREBASE  
@@ -27,7 +35,6 @@ sacaRopa(){
   };
 
   const app = initializeApp(firebaseConfig);
-  const analytics = getAnalytics(app);
   const db = getFirestore(app); // Obtener referencia a la base de datos
   const ropaCollection = collection(db, "ropa"); // Obtener referencia a la colección "ropa"
 
@@ -152,5 +159,7 @@ sacaRopa(){
         })
       );
   }
+
+
 }
   

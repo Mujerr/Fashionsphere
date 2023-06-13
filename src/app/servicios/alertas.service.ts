@@ -77,4 +77,22 @@ export class AlertasService {
     });
     
   }
+
+  prendaAñadida(){
+    Swal.fire({
+      icon: 'success',
+      title: 'Prenda añadida correctamente',
+      showConfirmButton: false,
+      timer: 1500
+    });
+  }
+
+  noUsuario(){
+    Swal.fire({
+      icon: 'error',
+      title: 'Error al borrar el usuario',
+      showConfirmButton: false,
+      timer: 1500
+    });
+  }
 }

@@ -1,106 +1,182 @@
+
 <div class="admin-container">
-    <ul class="nav nav-tabs">
-      <li class="nav-item">
-        <a class="nav-link active" id="users-tab" data-bs-toggle="tab" href="#users">
-          <i class="fas fa-users me-2"></i>Usuarios
-        </a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" id="products-tab" data-bs-toggle="tab" href="#products">
-          <i class="fas fa-tshirt me-2"></i>Prendas
-        </a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" id="orders-tab" data-bs-toggle="tab" href="#orders">
-          <i class="fas fa-shopping-cart me-2"></i>Pedidos
-        </a>
-      </li>
-    </ul>
-  
-    <div class="tab-content">
-      <div class="tab-pane fade show active" id="users">
-        <!-- Contenido de la pestaña de usuarios -->
-        <h3>Usuarios</h3>
-        <table class="table">
-          <thead>
-            <tr>
-              <th>Nombre</th>
-              <th>Email</th>
-              <th>Acciones</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr *ngFor="let user of users">
-              <td>{{ user.username }}</td>
-              <td>{{ user.email }}</td>
-              <td>
-                <button class="btn btn-danger" (click)="borrarUsuario(user.id)">Borrar</button>
-              </td>
-            </tr>
-          </tbody>
-        </table>
+  <ul class="nav nav-tabs">
+    <li class="nav-item">
+      <a class="nav-link active" id="users-tab" data-bs-toggle="tab" href="#users">
+        <i class="fas fa-users me-2"></i>Usuarios
+      </a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" id="products-tab" data-bs-toggle="tab" href="#products">
+        <i class="fas fa-tshirt me-2"></i>Prendas
+      </a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" id="orders-tab" data-bs-toggle="tab" href="#orders">
+        <i class="fas fa-shopping-cart me-2"></i>Pedidos
+      </a>
+    </li>
+  </ul>
+
+  <div class="tab-content">
+    <div class="tab-pane fade show active" id="users">
+      <!-- Contenido de la pestaña de usuarios -->
+      <h3>Usuarios</h3>
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Nombre</th>
+            <th>Email</th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let user of users">
+            <td>{{ user.username }}</td>
+            <td>{{ user.email }}</td>
+            <td>
+              <button class="btn btn-danger" (click)="borrarUsuario(user.id)">Borrar</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="tab-pane fade" id="products">
+    <!-- Contenido de la pestaña de prendas -->
+    <h3>Prendas</h3>
+
+    <!-- Formulario para agregar prendas -->
+    <div *ngIf="mostrarFormulario">
+  <form>
+      <div class="form-group">
+        <label for="nombre">Nombre:</label>
+        <input type="text" class="form-control" id="nombre" name="nombre" [(ngModel)]="nuevoProducto.nombre">
+      </div>
+      <div class="form-group">
+        <label for="descripcion">Descripción:</label>
+        <input type="text" class="form-control" id="descripcion" name="descripcion" [(ngModel)]="nuevoProducto.descripcion">
+      </div>
+      <div class="form-group">
+        <label for="descripcion">Precio:</label>
+        <input type="number" class="form-control" id="precio" name="precio" [(ngModel)]="nuevoProducto.precio">
+      </div>
+      <div class="form-group row">
+        <div class="col">
+          <label for="talla">Talla:</label>
+          <select class="form-control" id="talla" name="talla" [(ngModel)]="nuevoProducto.talla">
+            <option *ngFor="let talla of tallasDisponibles" [value]="talla">{{ talla }}</option>
+          </select>
+        </div>
+        <div class="col">
+          <label for="unidades">Unidades:</label>
+          <input type="number" class="form-control" id="unidades" name="unidades" [(ngModel)]="nuevoProducto.unidades">
+        </div>
+        <div class="col">
+          <button class="btn btn-primary mt-4" (click)="agregarTallaUnidades()">Agregar Talla y Unidades</button>
         </div>
       </div>
-  
-      <div class="tab-pane fade" id="products">
-        <!-- Contenido de la pestaña de prendas -->
-        <h3>Prendas</h3>
-<table class="table">
-  <thead>
-    <tr>
-      <th>Nombre</th>
-      <th>Descripción</th>
-      <th>Acciones</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr *ngFor="let prenda of prendas">
-      <td>{{ prenda.Nombre }}</td>
-      <td>{{ prenda.Descripcion }}</td>
-      <td>
-        <button class="btn btn-primary" (click)="modificarPrenda(prenda.id)">Modificar</button>
-        <button class="btn btn-danger" (click)="borrarPrenda(prenda.id)">Borrar</button>
-      </td>
-    </tr>
-  </tbody>
-</table>
-        </div>
+      <ul>
+        <li *ngFor="let tallaUnidad of tallasUnidades; let i = index">
+          {{ tallaUnidad.talla }}: {{ tallaUnidad.unidades }}
+          <button (click)="eliminarTallaUnidades(i)">Eliminar</button>
+        </li>
+      </ul>
+
+      <div class="form-group">
+        <label for="genero">Género:</label>
+        <select class="form-control" id="genero" name="genero" [(ngModel)]="nuevoProducto.genero">
+          <option value="Femenino">Femenino</option>
+          <option value="Masculino">Masculino</option>
+          <option value="Masculino">Otros</option>
+        </select>
       </div>
-  
-      <div class="tab-pane fade" id="orders">
-        <!-- Contenido de la pestaña de pedidos -->
-        <h3>Pedidos</h3>
-        <div class="table-responsive">
-          <table class="table table-striped">
-            <thead>
-              <tr>
-                <th>Número de pedido</th>
-                <th>Estado</th>
-                <th>Acciones</th>
-              </tr>
-            </thead>
-            <tbody>
-              <!-- Iterar sobre los pedidos y mostrarlos en filas de la tabla -->
-              <tr>
-                <td>Pedido 1</td>
-                <td>Pendiente</td>
-                <td>
-                  <button class="btn btn-primary" (click)="modificarEstadoPedido(1)">
-                    <i class="fas fa-edit me-1"></i>Modificar Estado
-                  </button>
-                </td>
-              </tr>
-              <tr>
-                <td>Pedido 2</td>
-                <td>Enviado</td>
-                <td>
-                  <button class="btn btn-primary" (click)="modificarEstadoPedido(2)">
-                    <i class="fas fa-edit me-1"></i>Modificar Estado
-                  </button>
-                </td>
-              </tr>
-              <!-- ... más filas de pedidos ... -->
-            </tbody>
-          </table>
-        </div>
+      <div class="form-group">
+        <label for="tipo">Tipo:</label>
+        <select class="form-control" id="tipo" name="tipo" [(ngModel)]="nuevoProducto.tipo">
+          <option value="Camiseta">Camiseta</option>
+          <option value="Sudadera">Sudadera</option>
+          <option value="Pantalones">Pantalones</option>
+          <option value="Calcetines">Calcetines</option>
+          <option value="Bolsos">Bolsos</option>
+          <option value="Belleza">Belleza</option>
+          <option value="Hogar">Hogar</option>
+          <option value="Mascota">Mascota</option>
+        </select>
       </div>
+      <div class="form-group">
+        <label for="color">Color:</label>
+        <input type="text" class="form-control" id="color" name="color" [(ngModel)]="nuevoColor" placeholder="Introduzca un color hexadecimal como el siguiente #A63D3D">
+        <ul>
+          <li *ngFor="let color of colores; let i = index">
+            {{color}}
+            <button (click)="eliminarColor(i)">Eliminar</button>
+          </li>
+        </ul>
+        <button class="btn btn-primary mt-2" (click)="agregarColor()">Agregar Color</button>
+        <p *ngIf="noApto">Color no válido</p>
+      </div>
+      <br>
+      <div class="form-group">
+        <label for="imagen">Imagen:</label>
+        <input type="file" class="form-control-file" id="imagen" accept=".jpg" (change)="validarImagen($event)" multiple>
+ 
+      </div>
+      <p *ngIf="!formatoValido">Formato de imagen no válido. Solo se permiten imágenes en formato JPG.</p>
+      <br>
+      <button class="btn btn-primary" type="submit" (click)="guardar()" *ngIf="!tipoDato">Añadir Prenda</button>
+      <button class="btn btn-primary" type="submit" (click)="guardar()" *ngIf="tipoDato">Actualizar Prenda</button> 
+      <p *ngIf="!formularioValido" style="color: red;">Por favor, complete todos los campos obligatorios y seleccione al menos una talla, un color y una imagen.</p>
+       <button type="submit" class="btn btn-danger"  (click)="mostrarFormulario = false">Cancelar</button>
+  </form>
+    </div>
+    <table class="table mt-3">
+      <thead>
+        <tr>
+          <th>Nombre</th>
+          <th>Descripción</th>
+          <th>Acciones</th>
+        
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let prenda of prendas">
+          <td>{{ prenda.Nombre }}</td>
+          <td>{{ prenda.Descripcion }}</td>
+          <td>
+            <button class="btn btn-primary" (click)="cargarDatosPrenda(prenda.id)">Modificar</button>
+            <button class="btn btn-danger" (click)="borrarPrenda(prenda.id)">Borrar</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <button class="btn btn-primary" (click)="nuevoArticulo()">Añadir prenda</button>
+  </div>
+
+  <div class="tab-pane fade" id="orders">
+    <!-- Contenido de la pestaña de pedidos -->
+    <h3>Pedidos</h3>
+    <div class="table-responsive">
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th>Número de pedido</th>
+            <th>Estado</th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- Iterar sobre los pedidos y mostrarlos en filas de la tabla -->
+          <tr *ngFor="let pedido of pedidos">
+            <td>{{ pedido.id }}</td>
+            <td>{{ pedido.total }}</td>
+            <td>
+              <button class="btn btn-primary" (click)="modificarEstadoPedido(pedido.id)">Modificar</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

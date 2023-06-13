@@ -1,71 +1,66 @@
-.admin-container {
-    padding: 20px;
-  }
-  
-  .nav-tabs {
-    margin-bottom: 20px;
-  }
-  
-  .table {
-    margin-bottom: 20px;
-  }
-  
-  .admin-container h3 {
-    font-size: 24px;
-    margin-bottom: 20px;
-  }
-  
-  .table-responsive {
-    overflow-x: auto;
-  }
-  
-  .btn {
-    border-radius: 4px;
-    font-size: 14px;
-  }
-  
-  .btn-primary {
-    background-color: #007bff;
-    border-color: #007bff;
-  }
-  
-  .btn-primary:hover {
-    background-color: #0069d9;
-    border-color: #0062cc;
-  }
-  
-  .btn-danger {
-    background-color: #dc3545;
-    border-color: #dc3545;
-  }
-  
-  .btn-danger:hover {
-    background-color: #c82333;
-    border-color: #bd2130;
-  }
-  
-  .form-label {
-    font-weight: bold;
-  }
-  
-  .form-control {
-    border-radius: 4px;
-  }
-  
-  .table th {
-    font-weight: bold;
-  }
-  
-  .table-striped tbody tr:nth-of-type(odd) {
-    background-color: rgba(0, 0, 0, 0.05);
-  }
-  
-  .table-striped tbody tr:hover {
-    background-color: rgba(0, 0, 0, 0.075);
-  }
-  
-  .fa {
-    font-size: 18px;
-    margin-right: 5px;
-  }
-  
+/* Estilos para el formulario */
+.form-group {
+  margin-bottom: 15px;
+}
+
+label {
+  font-weight: bold;
+}
+
+input[type="text"],
+select {
+  width: 100%;
+  padding: 5px;
+  font-size: 14px;
+}
+
+button {
+  margin-top: 10px;
+}
+
+/* Estilos para la tabla */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+
+th,
+td {
+  padding: 8px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+}
+
+th {
+  background-color: #f2f2f2;
+  font-weight: bold;
+}
+
+/* Estilos para los colores e imágenes */
+ul.list-group {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+ul.list-group li {
+  margin-bottom: 5px;
+}
+
+/* Estilos para las pestañas */
+.nav-tabs {
+  margin-top: 20px;
+}
+
+.tab-content {
+  margin-top: 20px;
+}
+
+.tab-pane {
+  display: none;
+}
+
+.tab-pane.active {
+  display: block;
+}

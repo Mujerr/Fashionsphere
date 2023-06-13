@@ -2,26 +2,50 @@
 <div class="container">
   <a routerLink="home" class="volver"><i class="fa-solid fa-arrow-left" style="color: #000000;"></i><strong>Volver</strong></a>
             <h2 class="card-title text-center mb-4">Registro</h2>
-            <form #registerForm="ngForm" (ngSubmit)="registerWithEmail(registerForm)">
+            <form #registerForm="ngForm" (ngSubmit)="validarFormulario()">
               <div class="mb-3">
                 <label for="Nombre" class="form-label">Nombre</label>
-                <input type="Nombre" class="form-control" id="Nombre" name="Nombre" required [(ngModel)]="nombre">
-              </div>
+                <input type="text" class="form-control" id="Nombre" name="nombre" [(ngModel)]="nombre" required
+                  [ngClass]="{ 'is-invalid': registerForm.controls['nombre'] && registerForm.controls['nombre'].invalid && registerForm.controls['nombre'].touched }">
+                <div class="invalid-feedback" *ngIf="registerForm.controls['nombre'] && registerForm.controls['nombre'].invalid && registerForm.controls['nombre'].touched">
+                  El campo Nombre es obligatorio.
+                </div>
+              </div>              
               <div class="mb-3">
                 <label for="Apellidos" class="form-label">Apellidos</label>
-                <input type="Apellidos" class="form-control" id="Apellidos" name="Apellidos" required [(ngModel)]="apellidos">
+                <input type="text" class="form-control" id="Apellidos" name="apellidos" required
+                  [ngClass]="{ 'is-invalid': registerForm.controls['apellidos'] && registerForm.controls['apellidos'].invalid && registerForm.controls['apellidos'].touched }"
+                  [(ngModel)]="apellidos">
+                <div class="invalid-feedback" *ngIf="registerForm.controls['apellidos'] && registerForm.controls['apellidos'].invalid && registerForm.controls['apellidos'].touched">
+                  El campo Apellidos es obligatorio.
+                </div>
               </div>
               <div class="mb-3">
                 <label for="Username" class="form-label">Username</label>
-                <input type="Username" class="form-control" id="Username" name="Username" required [(ngModel)]="username">
+                <input type="text" class="form-control" id="Username" name="username" required
+                  [ngClass]="{ 'is-invalid': registerForm.controls['username'] && registerForm.controls['username'].invalid && registerForm.controls['username'].touched }"
+                  [(ngModel)]="username">
+                <div class="invalid-feedback" *ngIf="registerForm.controls['username'] && registerForm.controls['username'].invalid && registerForm.controls['username'].touched">
+                  El campo Username es obligatorio.
+                </div>
               </div>
               <div class="mb-3">
                 <label for="email" class="form-label">Email</label>
-                <input type="email" class="form-control" id="email" name="email" required [(ngModel)]="email">
+                <input type="email" class="form-control" id="email" name="email" required
+                  [ngClass]="{ 'is-invalid': registerForm.controls['email'] && registerForm.controls['email'].invalid && registerForm.controls['email'].touched }"
+                  [(ngModel)]="email">
+                <div class="invalid-feedback" *ngIf="registerForm.controls['email'] && registerForm.controls['email'].invalid && registerForm.controls['email'].touched">
+                  El campo Email es obligatorio.
+                </div>
               </div>
               <div class="mb-3">
                 <label for="password" class="form-label">Contraseña</label>
-                <input type="password" class="form-control" id="password" name="password" required [(ngModel)]="password">
+                <input type="password" class="form-control" id="password" name="password" required
+                  [ngClass]="{ 'is-invalid': registerForm.controls['password'] && registerForm.controls['password'].invalid && registerForm.controls['password'].touched }"
+                  [(ngModel)]="password">
+                <div class="invalid-feedback" *ngIf="registerForm.controls['password'] && registerForm.controls['password'].invalid && registerForm.controls['password'].touched">
+                  El campo Contraseña es obligatorio.
+                </div>
               </div>
               <div class="mb-3">
                 <label for="address" class="form-label">Dirección</label>
@@ -35,7 +59,7 @@
                 <label for="profilePicture" class="form-label">Foto de perfil</label>
                 <input type="file" class="form-control" id="profilePicture" name="profilePicture" (change)="onFileSelected($event)">
               </div>
-              <button type="submit" class="btn btn-primary w-100">Registrarse</button>
+              <button type="submit" class="btn btn-primary w-100" (click)="registerWithEmail()">Registrarse</button>
               <button type="button" class="btn btn-danger w-100 mt-3" (click)="registerWithGoogle()"><i class="fa-brands fa-google fa-xl"></i>Registrarse con Google</button>
               <br>
               <hr>

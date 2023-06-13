@@ -60,7 +60,8 @@ export class AdminComponentComponent {
               private usuario:UsuarioService,
               private router:Router,
               private storage: AngularFireStorage,
-              private alerta:AlertasService) {}
+              private alerta:AlertasService,
+              ) {}
 
   ngOnInit() {
     this.usuario.esUsuarioAdmin().subscribe(isAdmin => { if (!isAdmin) { this.router.navigate(['/home']); } else {  this.isAdmin = true; } })
@@ -156,19 +157,8 @@ export class AdminComponentComponent {
 
 
 
-    async borrarUsuario(userId: string) {
-      try {
-        const carpeta = `users/${userId}`;
-        const storageRef = this.storage.ref(carpeta);
-        const result = await storageRef.list().toPromise();
-        await this.firestore.collection('users').doc(userId).delete();
-
-        if (result && result.items && result.items.length > 0) {
-          await storageRef.delete().toPromise();
-        } 
-      } catch (error) {
-        this.alerta.noUsuario(); 
-      }
+     borrarUsuario(userId: string) {
+      this.usuario.borrarUsuario(userId);
     }
     
     

@@ -6,6 +6,7 @@ import { AngularFireStorage } from '@angular/fire/compat/storage';
 import { finalize } from 'rxjs/operators';
 import { Router } from '@angular/router';
 import Swal from 'sweetalert2';
+import { NgForm } from '@angular/forms';
 
 @Component({
   selector: 'app-registrarse',
@@ -21,20 +22,63 @@ export class RegistrarseComponent {
   apellidos:string = '';
   username: string = '';
   direccion:string = '';
-  telefono:string | undefined ;
+  telefono:string = ''  ;
   profilePicture:string = '';
   selectedProfilePicture: File | null = null;
+  valido: boolean = false;
 
   constructor(private afAuth: AngularFireAuth,   private firestore: AngularFirestore, private storage: AngularFireStorage, private router:Router) {}
 
   onFileSelected(event: any) {
     this.selectedProfilePicture = event.target.files[0];
   }
- 
+
+  validarFormulario(): boolean {
+    if (!this.nombre) {
+      this.valido = false;
+      return false;
+    }
+
+    if (!this.apellidos) {
+      this.valido = false;
+      return false;
+    }
+    if (!this.username) {
+      this.valido = false;
+      return false;
+    }
+
+    const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    if (!emailRegex.test(this.email)) {
+      this.valido = false;
+      return false;
+    }
+
+    // const expresionRegular = /^\+\d{1,15}$/;
+    // if (!expresionRegular.test(this.telefono)) {
+    //   this.valido = false;
+    //   return false;
+    // }
+
+    if (this.password.length < 6) {
+      this.valido = false;
+      return false;
+    }
+    
+
+    this.valido = true;
+    return true;
+  }
 
 
-  registerWithEmail(registerForm: any) {
-    if (registerForm.valid) {
+
+
+
+
+  registerWithEmail() {
+    console.log(this.validarFormulario());
+    if(this.validarFormulario()){
+
       const email = this.email;
       const password = this.password;
       const phone = this.phone;
@@ -61,10 +105,10 @@ export class RegistrarseComponent {
 
               username:username
             };
-  
+
             // Obtener la referencia al documento del usuario en la colección 'users'
             const userRef = this.firestore.collection('users').doc(user.uid);
-  
+
             // Guardar los datos adicionales en el documento del usuario
             userRef.set(userData)
               .then(() => {
@@ -77,13 +121,13 @@ export class RegistrarseComponent {
       const filePath = `users/${user.uid}/${this.selectedProfilePicture.name.includes(user.uid)}`;
       const fileRef = this.storage.ref(filePath);
       const uploadTask = this.storage.upload(filePath, this.selectedProfilePicture);
-  
+
       uploadTask.snapshotChanges().pipe(
         finalize(() => {
           fileRef.getDownloadURL().subscribe((url: any) => {
             // Actualizar el campo profilePicture en el objeto userData con la URL de la foto de perfil
             userData.profilePicture = url;
-  
+
             // Guardar los datos adicionales del usuario en la base de datos
             userRef.set(userData)
               .then(() => {
@@ -96,24 +140,15 @@ export class RegistrarseComponent {
       ).subscribe();
     } else {
       // Si no se seleccionó ninguna imagen, guardar los datos adicionales del usuario sin la URL de la foto de perfil
-      userRef.set(userData)
-        .then(() => {
-          this.router.navigate(['/home']);
-
-          // Aquí puedes redirigir al usuario a otra página o realizar otras acciones
-        })
-        .catch((error) => { this.errorRegistro(); });
-
+      userRef.set(userData) .then(() => { this.router.navigate(['/home']); }) .catch((error) => { this.errorRegistro(); });
     }
     } else { this.errorRegistro(); }
   })
   .catch((error) => { this.errorRegistro(); });
-  
-    // Reiniciar los campos del formulario después del registro
-    registerForm.reset();
+
   }
-  }
-  
+}
+
 
   registerWithGoogle() {
     this.afAuth.signInWithPopup(new GoogleAuthProvider())
@@ -130,14 +165,14 @@ export class RegistrarseComponent {
             apellidos:this.apellidos,
             username:user.email,
           };
-  
+
           this.firestore.collection('users').doc(user.uid).set(userData)
             .then(() => {
               this.router.navigate(['/home']);
               // Aquí puedes redirigir al usuario a otra página o realizar otras acciones
             })
             .catch((error) => { this.errorRegistro(); });
-  
+
           // Reiniciar los campos del formulario después del registro
           this.email = '';
           this.password = '';
@@ -155,6 +190,6 @@ export class RegistrarseComponent {
     Swal.fire({
       icon: 'error',
       title: 'no se ha podido registrar el usuario',
-    }) 
+    })
   }
 }

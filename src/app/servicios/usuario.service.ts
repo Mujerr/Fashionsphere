@@ -4,7 +4,10 @@ import { Observable } from 'rxjs';
 import { AlertasService } from './alertas.service';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { map } from 'rxjs/operators'
-
+import { AngularFireStorage } from '@angular/fire/compat/storage';
+import * as firebase from 'firebase/compat';
+import { getAuth, deleteUser as deleteFirebaseUser } from 'firebase/auth';
+import { deleteDoc, doc } from 'firebase/firestore';
 @Injectable({
   providedIn: 'root'
 })
@@ -13,7 +16,8 @@ export class UsuarioService {
   constructor(private afAuth: AngularFireAuth,
               private cdr: ChangeDetectorRef,
               private alerta: AlertasService,
-              private firestore: AngularFirestore ) {}
+              private firestore: AngularFirestore,
+              private storage: AngularFireStorage ) {}
 
   sacarUsuarioConectado(): Observable<firebase.default.User | null> {
     return this.afAuth.user;
@@ -189,7 +193,7 @@ export class UsuarioService {
     return this.getUser().pipe(
       map(user => {
         // Aquí debes ajustar el email de administrador según el valor real
-        const emailAdmin = 'admin@fashionsphere.com';
+        const emailAdmin = 'admin@fashionsphere.store';
         
         // Verificar si el usuario tiene el email de administrador
         return user && user.email === emailAdmin;
@@ -197,8 +201,33 @@ export class UsuarioService {
     );
   }
 
+  async borrarUsuario(userId: string) {
+    try {
+      const carpeta = `users/${userId}`;
+      const storageRef = this.storage.ref(carpeta);
+      const result = await storageRef.listAll().toPromise();
+      await this.firestore.collection('users').doc(userId).delete();
 
+      const auth = getAuth();
+      const currentUser = auth.currentUser;
 
+      if (currentUser) {
+        await deleteFirebaseUser(currentUser);
 
+        if (result && result.items.length > 0) {
+          await Promise.all(result.items.map(itemRef => itemRef.delete()));
+        }
+
+        console.log('Usuario borrado exitosamente');
+      } else {
+        console.log('No se encontró un usuario actual');
+      }
+    } catch (error) {
+      console.error('Error al borrar el usuario:', error);
+      this.alerta.noUsuario(); 
+    }
+  }
   
+  
+
 }

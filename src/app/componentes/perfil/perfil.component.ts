@@ -113,16 +113,28 @@ export class PerfilComponent {
   }
   
   uploadPhoto(file: File) {
-    // Generar un nombre de archivo único para la nueva imagen de perfil
     const newFileName = `${file.name}`;
-    const filePath = `users/${this.userId}/${newFileName}`; // Ruta del archivo en Firebase Storage
-    const fileRef = this.storage.ref(filePath); // Referencia al archivo en Firebase Storage
+    const filePath = `users/${this.userId}/${newFileName}`;
+    const fileRef = this.storage.ref(filePath);
   
-    // Obtener una referencia a la carpeta del usuario
     const userFolderRef = this.storage.ref(`users/${this.userId}`);
   
-    // Eliminar los archivos previos en la carpeta del usuario
-    userFolderRef.listAll().toPromise()
+    // Verificar si la carpeta del usuario existe
+    userFolderRef
+      .listAll()
+      .toPromise()
+      .then(result => {
+        if (!result?.prefixes.length) {
+          // La carpeta del usuario no existe, crearla
+          return userFolderRef.put({}); // Subir un archivo vacío para crear la carpeta
+        } else {
+          return null;
+        }
+      })
+      .then(() => {
+        // Eliminar los archivos previos en la carpeta del usuario
+        return userFolderRef.listAll().toPromise();
+      })
       .then(result => {
         if (result && result.items) {
           const fileDeletionPromises = result.items.map(item => item.delete());
@@ -133,7 +145,7 @@ export class PerfilComponent {
       })
       .then(() => {
         // Subir la nueva foto de perfil
-        const task = this.storage.upload(filePath, file); // Subida del archivo
+        const task = this.storage.upload(filePath, file);
   
         task.snapshotChanges()
           .pipe(
@@ -150,6 +162,7 @@ export class PerfilComponent {
           .subscribe();
       })
   }
+  
 
   validateTelefono() {
     if (this.telefono.length > 9) {

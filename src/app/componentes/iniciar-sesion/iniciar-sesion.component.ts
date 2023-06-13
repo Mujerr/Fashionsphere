@@ -5,6 +5,8 @@ import { Router } from '@angular/router';
 import { GoogleAuthProvider } from 'firebase/auth';
 import firebase from 'firebase/compat/app';
 import Swal from 'sweetalert2'
+import { getAuth, sendPasswordResetEmail } from 'firebase/auth';
+
 
 @Component({
   selector: 'app-iniciar-sesion',
@@ -63,6 +65,21 @@ export class IniciarSesionComponent{
     });
     }
     
+
+    // Función para enviar el correo electrónico de recuperación de contraseña
+    // enviarRecuperacionContrasena() {
+    //   const auth = getAuth();
+    //   sendPasswordResetEmail(auth, email)
+    //     .then(() => {
+    //       // Éxito, el correo electrónico de recuperación de contraseña se envió correctamente
+    //       console.log('Se ha enviado un correo electrónico de recuperación de contraseña.');
+    //     })
+    //     .catch(error => {
+    //       // Ocurrió un error al enviar el correo electrónico de recuperación de contraseña
+    //       console.error('Error al enviar el correo electrónico de recuperación de contraseña:', error);
+    //     });
+    // }
+
     errorRegistro(){
       Swal.fire({
         icon: 'error',

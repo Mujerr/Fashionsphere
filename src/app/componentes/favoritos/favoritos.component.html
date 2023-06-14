@@ -11,7 +11,6 @@
           <h5 class="card-title" [routerLink]="['/articulo', prenda.id]">{{prenda.Nombre}}</h5>
           <p class="card-price">{{prenda.Precio}}{{'SimboloPrecio' | translate}}</p>
           <div class="d-grid gap-2">
-            <button class="btn btn-primary" type="button">Comprar</button>
             <button class="btn btn-outline-secondary" type="button" (click)="BorrarColorFavorito(prenda.id, prenda.color)">
               <i class="fa fa-heart"></i>
             </button>

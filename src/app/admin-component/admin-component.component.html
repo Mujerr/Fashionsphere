@@ -167,7 +167,6 @@
         <thead>
           <tr>
             <th>Número de pedido</th>
-            <th>Estado</th>
             <th>Acciones</th>
           </tr>
         </thead>
@@ -175,7 +174,6 @@
           <!-- Iterar sobre los pedidos y mostrarlos en filas de la tabla -->
           <tr *ngFor="let pedido of pedidos">
             <td>{{ pedido.id }}</td>
-            <td>{{ pedido.Total }}</td>
             <td><select [(ngModel)]="pedido.estado" (change)="modificarEstadoPedido(pedido)">
               <option value="pendiente">Pendiente</option>
               <option value="enviado">Enviado</option>

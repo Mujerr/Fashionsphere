@@ -37,6 +37,8 @@ import { ComprarComponent } from './componentes/comprar/comprar.component';
 import { DisenaRopaComponent } from './componentes/disena-ropa/disena-ropa.component';
 import { UsuarioService } from './servicios/usuario.service';
 import { AdminComponentComponent } from './admin-component/admin-component.component';
+import { BuscadorComponent } from './componentes/buscador/buscador.component';
+import { PedidosComponent } from './componentes/pedidos/pedidos.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -54,7 +56,9 @@ import { AdminComponentComponent } from './admin-component/admin-component.compo
     FavoritosComponent,
     ComprarComponent,
     DisenaRopaComponent,
-    AdminComponentComponent
+    AdminComponentComponent,
+    BuscadorComponent,
+    PedidosComponent
   ],
   imports: [
     FormsModule,

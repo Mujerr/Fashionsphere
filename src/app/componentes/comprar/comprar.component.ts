@@ -18,7 +18,7 @@ export class ComprarComponent {
   tarjetaSelected: boolean = false;
   showErrorMessage: boolean = false;
   userData: any = {}; // Propiedad para almacenar los datos del usuario
-  totalFinal: number | undefined;
+  totalFinal: number = 0;
   user: User | null = null;
   updatedUserData: any = {}; // Propiedad para almacenar los datos actualizados del usuario
 
@@ -30,6 +30,9 @@ export class ComprarComponent {
     email: false
   };
   idUser: string | undefined;
+  paymentCompleted: boolean = false;
+  popup: any;
+
   constructor(private paypalService:PaypalService,
               private afAuth: AngularFireAuth,  
               private firestore: AngularFirestore,
@@ -51,6 +54,9 @@ export class ComprarComponent {
 
       }
     });
+    if (this.paymentCompleted) {
+      window.close(); // Cerrar la pestaña después de completar el pago
+    }
   }   
 
   validatePaymentSelection() {
@@ -63,14 +69,13 @@ export class ComprarComponent {
     }
   }
 
-  proceedToPayment() {
+  proceedToPayment(amount: number) {
     if (!this.isPaymentSelected) {
       console.log(this.isPaymentSelected);
       this.showErrorMessage = true;
       return;
     }
   
-    const amount = 50.00;
     this.paypalService.getAccessToken().subscribe(
       (response: any) => {
         const accessToken = response.access_token;
@@ -78,32 +83,18 @@ export class ComprarComponent {
         this.paypalService.createOrder(amount, accessToken).subscribe(
           (orderResponse: any) => {
             console.log('Orden de pago creada:', orderResponse);
-            const popup = window.open(orderResponse.links[1].href, '_blank', 'width=600,height=600');
-            if (popup) {
-              window.addEventListener('message', (event) => {
-                if (event.origin === 'https://www.paypal.com' && event.data === 'payment_completed') {
-                  this.paypalService.captureOrder(orderResponse.id, accessToken).subscribe(
-                    (captureResponse: any) => {
-                      console.log('Pago capturado:', captureResponse);
-                      Swal.fire({
-                        icon: 'success',
-                        title: 'Compra finalizada',
-                        text: '¡Gracias por tu compra!',
-                      }).then(() => {
-                        // Redirigir al componente seguimientoPedido
-                        this.router.navigate(['/seguimientoPedido']);
-                      });
-                    },
-                    (captureError: any) => {
-                      Swal.fire({
-                        icon: 'error',
-                        title: 'Error en el pago',
-                        text: 'Ha ocurrido un error al procesar el pago. Por favor, inténtalo nuevamente.',
-                      });
-                    }
-                  );
-                }
-              });
+            this.popup = window.open(orderResponse.links[1].href, '_blank', 'width=600,height=600');
+            if (this.popup) {
+              // Crea una función anónima para manejar el evento de mensaje
+              const handleMessage = (event: MessageEvent) => {
+                  console.log('entro');
+                  this.popup.close(); // Cierra la ventana de PayPal
+                  this.handlePaymentCompleted(amount); // Llama a la función para completar el pago
+                  window.removeEventListener('message', handleMessage); // Elimina el event listener
+                
+              };
+  
+              window.addEventListener('message', handleMessage);
             } else {
               Swal.fire({
                 icon: 'error',
@@ -131,25 +122,35 @@ export class ComprarComponent {
     );
   }
   
+
+  handlePaymentCompleted(amount:number){
+      Swal.fire({
+        icon: 'success',
+        title: 'Pago completado',
+        text: '¡El pago se ha completado con éxito!',
+      });
   
-
-  captureOrder(orderId: string, accessToken: string) {
-    this.paypalService.captureOrder(orderId, accessToken).subscribe(
-      (captureResponse: any) => {
-        console.log('Pago capturado:', captureResponse);
-        Swal.fire({
-          icon: 'success',
-          title: 'Compra finalizada',
-          text: '¡Gracias por tu compra!',
-        }).then(() => {
-          // Redirigir al componente seguimientoPedido
-          this.router.navigate(['/seguimientoPedido']);
-        });
-      },
-      (error: any) => { console.error('Error al capturar el pago:', error); }
-    );
+      // Crea el documento en Firebase
+      const pedido = {
+        idUsuario: this.user?.uid,
+        estado: 'pendiente',
+        fechaCreacion: new Date(),
+        total: amount.toFixed(2) // Asegúrate de tener la variable "amount" accesible en este punto
+      };
+  
+      // Llama a la función para guardar el pedido en Firebase
+      this.guardarPedido(pedido);
+      
+      
+    
   }
-
+  
+  
+  guardarPedido(pedido: any) {
+    this.firestore.collection('pedidos').add(pedido)
+    this.router.navigate(['/home'])
+  }
+  
 
   sacarDatosUsuario(userUid:string) {
 

@@ -4,6 +4,7 @@ import { UsuarioService } from '../servicios/usuario.service';
 import { Router } from '@angular/router';
 import { AngularFireStorage } from '@angular/fire/compat/storage';
 import { AlertasService } from '../servicios/alertas.service';
+import { finalize } from 'rxjs/operators';
 @Component({
   selector: 'app-admin-component',
   templateUrl: './admin-component.component.html',
@@ -83,8 +84,12 @@ export class AdminComponentComponent {
         });
       });
     
-      this.firestore.collection('pedidos').valueChanges().subscribe((pedidos: any[]) => {
-        this.pedidos = pedidos;
+      this.firestore.collection('pedidos').snapshotChanges().subscribe((snapshot) => {
+        this.pedidos = snapshot.map((doc) => {
+          const id = doc.payload.doc.id;
+          const data: any = doc.payload.doc.data();
+          return { id, ...data };
+        });
       });
     }
 
@@ -163,11 +168,23 @@ export class AdminComponentComponent {
     
     
     
-  
-    modificarEstadoPedido(pedidoId: number) {
-      // Lógica para modificar el estado del pedido con el ID especificado
+    modificarEstadoPedido(pedido: any) {
+      if (pedido.estado) {
+        this.firestore
+          .collection('pedidos')
+          .doc(pedido.id)
+          .update({ estado: pedido.estado })
+          .then(() => {
+            console.log('Estado del pedido actualizado con éxito');
+          })
+          .catch((error) => {
+            console.error('Error al actualizar el estado del pedido:', error);
+          });
+      } else {
+        console.error('El estado del pedido no está definido');
+      }
     }
-
+    
 
     mostrarFormularioPrenda() {
       this.mostrarFormulario = true;
@@ -209,18 +226,23 @@ export class AdminComponentComponent {
         Colores: coloresArray
       });
       const prendaId = docRef.id;
-
-      for (let i = 0; i < this.imagenes.length; i++) {
+      const inputElement = document.getElementById('imagen') as HTMLInputElement;
+      if(inputElement){
+        const files = inputElement.files ?? [];
+        for (let i = 0; i < files.length; i++) {
       
-        const imagen = this.imagenes[i]; // Se asume que this.imagenes contiene los archivos de imagen como objetos de tipo File
-        const fileName = imagen.name; // Obtener el nombre del archivo
-      
-        // Generar la ruta de almacenamiento en Firebase Storage
-        const filePath = `Ropa/${prendaId}/${fileName}`;
-        const storageRef = this.storage.ref(filePath);
+          const imagen = files[i]; // Se asume que this.imagenes contiene los archivos de imagen como objetos de tipo File
+          const fileName = imagen.name; // Obtener el nombre del archivo
         
-        await storageRef.put(imagen);
+          // Generar la ruta de almacenamiento en Firebase Storage
+          const filePath = `Ropa/${prendaId}/${fileName}`;
+          const storageRef = this.storage.ref(filePath);
+          
+          await storageRef.put(imagen);
+        }
+
       }
+      
     
       this.alerta.prendaAñadida();
       this.limpiarFormulario();
@@ -265,21 +287,31 @@ export class AdminComponentComponent {
 
 
     async subirImagenes(prendaId: string): Promise<void> {
-
-      for (let i = 0; i < this.imagenes.length; i++) {
-      
-        const imagen = this.imagenes[i]; // Se asume que this.imagenes contiene los archivos de imagen como objetos de tipo File
-        const fileName = imagen.name; // Obtener el nombre del archivo
-      
-        // Generar la ruta de almacenamiento en Firebase Storage
-        const filePath = `Ropa/${prendaId}/${fileName}`;
-        const storageRef = this.storage.ref(filePath);
-        await storageRef.put(imagen);
+      const inputElement = document.getElementById('imagen') as HTMLInputElement;
+      if (inputElement) {
+        const files = inputElement.files ?? [];
+    
+        // Eliminar el contenido existente en la carpeta de destino
+        const carpetaDestino = `Ropa/${prendaId}/`;
+        const listaArchivos$ = this.storage.ref(carpetaDestino).listAll();
+        await listaArchivos$.pipe(
+          finalize(async () => {
+            const listaArchivos = await listaArchivos$.toPromise() ?? { items: [] };
+            await Promise.all(listaArchivos.items.map(item => item.delete()));
+    
+            // Subir las nuevas imágenes
+            for (let i = 0; i < files.length; i++) {
+              const imagen = files[i];
+              const fileName = imagen.name;
+              const filePath = `${carpetaDestino}${fileName}`;
+              const storageRef = this.storage.ref(filePath);
+    
+              await storageRef.put(imagen);
+            }
+          })
+        ).toPromise();
       }
-  }
-    
-    
-    
+    }
 
   cargarDatosPrenda(prendaId: string) {
     this.id = prendaId;

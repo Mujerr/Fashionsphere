@@ -21,6 +21,7 @@ export class NavbarComponent implements OnInit {
   user: User | null = null;
   userName: string | null = '';
   userPhoto: string | null = '';
+  textoBusqueda: string = '';
 
   constructor(
     public translate: TranslateService,

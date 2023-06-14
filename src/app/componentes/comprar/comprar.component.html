@@ -92,10 +92,6 @@
           <input type="radio" id="paypal" name="payment" value="paypal" [(ngModel)]="paypalSelected" (change)="validatePaymentSelection()">
           <img src="assets/img/pago/logo_paypal.png" alt="PayPal">Paypal
         </label>
-        <label for="tarjeta">
-          <input type="radio" id="tarjeta" name="payment" value="tarjeta" [(ngModel)]="tarjetaSelected" (change)="validatePaymentSelection()">
-          <img src="assets/img/pago/tarjeta_logo.png" alt="Tarjeta"> Tarjeta de Crédito/Débito
-        </label>
       </div>  
     </div>
   </div>
@@ -111,6 +107,6 @@
       <span>Total:</span>
       <span>{{ totalFinal }}</span>
     </div>
-    <button (click)="proceedToPayment()" class="btn btn-primary" type="submit">Proceder al Pago</button>
+    <button (click)="proceedToPayment(totalFinal)" class="btn btn-primary" type="submit">Proceder al Pago</button>
   </div>
 </div>

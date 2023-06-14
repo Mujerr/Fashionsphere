@@ -26,16 +26,17 @@
       <div class="mx-auto my-3 d-lg-none d-sm-block d-xs-block">
         <div class="input-group">
           <span class="border-dark input-group-text bg-dark text-white"><i class="fa-solid fa-magnifying-glass"></i></span>
-          <input type="text" class="form-control border-dark" style="color:#7a7a7a">
-          <button class="btn btn-dark text-white">{{'navbar.Buscar' |translate}}</button>
+          <input type="text" class="form-control border-dark" style="color:#7a7a7a" [(ngModel)]="textoBusqueda">
+          <button class="btn btn-dark text-white" [routerLink]="['/buscador', textoBusqueda]">{{ 'navbar.Buscar' | translate }}</button>
         </div>
       </div>
+      
       <div class=" collapse navbar-collapse" id="navbarNavDropdown">
         <div class="ms-auto d-none d-lg-block">
           <div class="input-group">
             <span class="border-dark input-group-text bg-dark text-white"><i class="fa-solid fa-magnifying-glass"></i></span>
-            <input type="text" class="form-control border-dark" style="color:#7a7a7a">
-            <button class="btn btn-dark text-white">{{'navbar.Buscar' |translate}}</button>
+            <input type="text" class="form-control border-dark" style="color:#7a7a7a" [(ngModel)]="textoBusqueda">
+            <button class="btn btn-dark text-white" [routerLink]="['/buscador', textoBusqueda]">{{ 'navbar.Buscar' | translate }}</button>
           </div>
         </div>
         <ul class="navbar-nav ms-auto ">
@@ -53,26 +54,26 @@
                     <ul class="list-unstyled">
                       <li class="dropdown-header">{{'navbar.OpcionesCatalogo.Mujer' | translate}}</li>
                       <li><a class="dropdown-item" [routerLink]="['/tipoRopa','Femenino']">{{'navbar.OpcionesCatalogo.Ropa' | translate}}</a></li>
-                      <li><a class="dropdown-item" [routerLink]="['/tipoRopa','Femenino' ,'calzado']">{{'navbar.OpcionesCatalogo.Calzado' | translate}}</a></li>
-                      <li><a class="dropdown-item" [routerLink]="['/tipoRopa','Femenino' ,'bolsosAccesorios']">{{'navbar.OpcionesCatalogo.Bolsosyaccesorios' | translate}}</a></li>
-                      <li><a class="dropdown-item" [routerLink]="['/tipoRopa','Femenino' ,'belleza']">{{'navbar.OpcionesCatalogo.Bellezaycuidadopersonal' | translate}}</a></li>
+                      <li><a class="dropdown-item" [routerLink]="['/tipoRopa','Femenino' ,'Calzado']">{{'navbar.OpcionesCatalogo.Calzado' | translate}}</a></li>
+                      <li><a class="dropdown-item" [routerLink]="['/tipoRopa','Femenino' ,'Bolsos']">{{'navbar.OpcionesCatalogo.Bolsosyaccesorios' | translate}}</a></li>
+                      <li><a class="dropdown-item" [routerLink]="['/tipoRopa','Femenino' ,'Belleza']">{{'navbar.OpcionesCatalogo.Bellezaycuidadopersonal' | translate}}</a></li>
                       <li class="dropdown-divider"></li>
                       <li class="dropdown-header">{{'navbar.OpcionesCatalogo.Hombre' | translate}}</li>
                       <li><a class="dropdown-item" [routerLink]="['/tipoRopa','Masculino']" >{{'navbar.OpcionesCatalogo.Ropa' | translate}}</a></li>
-                      <li><a class="dropdown-item" [routerLink]="['/tipoRopa','Masculino','calzado']">{{'navbar.OpcionesCatalogo.Calzado' | translate}}</a></li>
-                      <li><a class="dropdown-item" [routerLink]="['/tipoRopa','Masculino', 'accesorios']">{{'navbar.OpcionesCatalogo.Accesorios' | translate}}</a></li>
+                      <li><a class="dropdown-item" [routerLink]="['/tipoRopa','Masculino','Calzado']">{{'navbar.OpcionesCatalogo.Calzado' | translate}}</a></li>
+                      <li><a class="dropdown-item" [routerLink]="['/tipoRopa','Masculino', 'Accesorios']">{{'navbar.OpcionesCatalogo.Accesorios' | translate}}</a></li>
                     </ul>
                   </div>
                   <div class="col-md-4">
                     <ul class="list-unstyled">
                       <li class="dropdown-header">{{'navbar.OpcionesCatalogo.Niños' | translate}}</li>
-                      <li><a class="dropdown-item" [routerLink]="['/tipoRopa','Otros' ,'niñas']">{{'navbar.OpcionesCatalogo.Niñas' | translate}}</a></li>
-                      <li><a class="dropdown-item" [routerLink]="['/tipoRopa','Otros' ,'niños']">{{'navbar.OpcionesCatalogo.NiñosChico' | translate}}</a></li>
-                      <li><a class="dropdown-item" [routerLink]="['/tipoRopa','Otros' ,'bebe']">{{'navbar.OpcionesCatalogo.Bebes' | translate}}</a></li>
+                      <li><a class="dropdown-item" [routerLink]="['/tipoRopa','Otros' ,'Niñas']">{{'navbar.OpcionesCatalogo.Niñas' | translate}}</a></li>
+                      <li><a class="dropdown-item" [routerLink]="['/tipoRopa','Otros' ,'Niños']">{{'navbar.OpcionesCatalogo.NiñosChico' | translate}}</a></li>
+                      <li><a class="dropdown-item" [routerLink]="['/tipoRopa','Otros' ,'Bebes']">{{'navbar.OpcionesCatalogo.Bebes' | translate}}</a></li>
                       <li class="dropdown-divider"></li>
                       <li class="dropdown-header">{{'navbar.OpcionesCatalogo.Hogar' | translate}}</li>
-                      <li><a class="dropdown-item" [routerLink]="['/tipoRopa','Otros' ,'decoracion']">{{'navbar.OpcionesCatalogo.Decoracion' | translate}}</a></li>
-                      <li><a class="dropdown-item" [routerLink]="['/tipoRopa', 'Otros','mascotas']">{{'navbar.OpcionesCatalogo.Productosparamascotas' | translate}}</a></li>
+                      <li><a class="dropdown-item" [routerLink]="['/tipoRopa','Otros' ,'Hogar']">{{'navbar.OpcionesCatalogo.Decoracion' | translate}}</a></li>
+                      <li><a class="dropdown-item" [routerLink]="['/tipoRopa', 'Otros','Mascota']">{{'navbar.OpcionesCatalogo.Productosparamascotas' | translate}}</a></li>
                     </ul>
                   </div>
                   <div class="col-md-4">
@@ -119,6 +120,7 @@
               </li>
               
               <li><a class="dropdown-item" routerLink="perfil">{{'navbar.OpcionesCatalogo.EditarPerfil' |translate}}</a></li>
+              <li><a class="dropdown-item" routerLink="pedidos">Pedidos</a></li>
               <li class="logoutli" (click)="logout()"><a class="dropdown-item"><span class="text">{{'navbar.OpcionesCatalogo.Salir' |translate}}</span><i class="fa-solid fa-right-from-bracket logout"></i></a></li>
             </ul>
           </li>

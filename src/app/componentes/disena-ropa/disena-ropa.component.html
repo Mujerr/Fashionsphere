@@ -1,35 +1,41 @@
+<div class="canvas-container" #canvasContainer></div>
 
-   <br><br><br>
-   <div class="canvas-container" #canvasContainer></div>
+<br>
 
-   <div class="options">
-     <h3>Texturas</h3>
-     <div class="texture-type">
-       <label>
-         <input type="radio" name="textureType" [(ngModel)]="selectedTextureType" value="matcap" (change)="applyMatcapTexture()">
-         Matcap
-       </label>
-       <br>
-       <label>
-         <input type="radio" name="textureType" [(ngModel)]="selectedTextureType" value="color" (change)="applyColorTexture()">
-         Color
-       </label>
-     </div>
-   
-     <div class="texture-upload">
-       <label for="textureImage">Subir imagen:</label>
-       <input type="file" id="textureImage" (change)="onTextureImageChange($event)">
-     </div>
+<div class="options">
+  <h3>Texturas</h3>
+  <div class="texture-type">
+    <label>
+      <input type="radio" name="textureType" [(ngModel)]="selectedTextureType" value="matcap" (change)="applyMatcapTexture()">
+      Matcap
+    </label>
+    <br>
+    <label>
+      <input type="radio" name="textureType" [(ngModel)]="selectedTextureType" value="color" (change)="applyImageColorTexture()">
+      Color
+    </label>
+  </div>
 
-     <!-- <div class="brush-options">
-      <button (click)="changeBrush('pencil')">Pencil</button>
-      <button (click)="changeBrush('circle')">Circle</button>
-      <button (click)="changeBrush('spray')">Spray</button>
-    </div>
-    
-    <div class="color-options">
-      <input type="color" (input)="changeColor($event)">
-    </div> -->
-   </div>
-   
-   
+  <div class="texture-upload">
+    <label for="textureImage">Subir imagen:</label>
+    <input type="file" id="textureImage" (change)="onTextureImageChange($event)">
+  </div>
+
+  <br><br>
+
+  <div class="color-picker">
+    <label for="colorPicker">Seleccionar color:</label>
+    <input type="color" id="colorPicker" [(ngModel)]="activeColor" (change)="applyColorTexture()">
+  </div>
+
+  <br><br>
+
+  <div class="repeat-option" *ngIf="selectedTextureType === 'color'">
+    <label for="repeatOption">Repetir textura:</label>
+    <select id="repeatOption" [(ngModel)]="repeatOption" (change)="applyImageColorTexture()">
+      <option value="no-repeat">No repetir</option>
+      <option value="repeat">Repetir</option>
+    </select>
+  </div>
+
+</div>

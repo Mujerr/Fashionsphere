@@ -8,6 +8,7 @@ import { Router } from '@angular/router';
 })
 export class AppComponent {
   constructor(private router: Router) {}
+  
   title = 'Fashionsphere';
   isLoginPage(): boolean {
     return this.router.url === '/inicioSesion' ||  this.router.url === '/registrarse' ; 

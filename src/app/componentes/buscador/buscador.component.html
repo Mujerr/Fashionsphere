@@ -1,0 +1,48 @@
+<div class="container">
+    <div class="row">
+      <div class="col-lg-3">
+        <h4>Ordenar por</h4>
+        <div class="form-check">
+          <input class="form-check-input" type="radio" name="orden" id="ordenPrecioAsc" value="asc" (change)="ordenarPorPrecio('asc')" [checked]="ordenSeleccionado === 'asc'">
+          <label class="form-check-label" for="ordenPrecioAsc">
+            Precio ascendente
+          </label>
+        </div>
+        <div class="form-check">
+          <input class="form-check-input" type="radio" name="orden" id="ordenPrecioDesc" value="desc" (change)="ordenarPorPrecio('desc')" [checked]="ordenSeleccionado === 'desc'">
+          <label class="form-check-label" for="ordenPrecioDesc">
+            Precio descendente
+          </label>
+        </div>
+        <div class="form-check">
+          <input class="form-check-input" type="radio" name="orden" id="ordenAlfabetoAZ" value="az" (change)="ordenarPorAlfabeto('az')" [checked]="ordenSeleccionado === 'az'">
+          <label class="form-check-label" for="ordenAlfabetoAZ">
+            Nombre (A-Z)
+          </label>
+        </div>
+        <div class="form-check">
+          <input class="form-check-input" type="radio" name="orden" id="ordenAlfabetoZA" value="za" (change)="ordenarPorAlfabeto('za')" [checked]="ordenSeleccionado === 'za'">
+          <label class="form-check-label" for="ordenAlfabetoZA">
+            Nombre (Z-A)
+          </label>
+        </div>
+      </div>
+      <div class="col-lg-9">      
+        <p>Se encontraron {{ prendasEncontradas.length }} resultados</p>
+        <hr>
+        <h3>Prendas encontradas</h3>
+        <div class="row">
+          <div class="col-lg-4 mb-4" *ngFor="let prenda of prendasEncontradas">
+            <div class="card">
+                <img [src]="prenda.imagen" alt="Imagen de prenda" *ngIf="prenda.imagen">
+                <div class="card-body">
+                    <h5 class="card-title">{{ prenda.Nombre }}</h5>
+                    <p class="card-text">Precio: {{ prenda.Precio | currency }}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  

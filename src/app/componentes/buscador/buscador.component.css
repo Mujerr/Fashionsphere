@@ -1,0 +1,26 @@
+.container {
+    margin-top: 20px;
+  }
+  
+  .card-deck {
+    margin-top: 20px;
+  }
+  
+  .card {
+    width: 18rem;
+    margin-bottom: 20px;
+  }
+  
+  .card-img-top {
+    height: 200px;
+    object-fit: cover;
+  }
+  
+  .text-end {
+    text-align: end;
+  }
+  
+  .mb-4 {
+    margin-bottom: 1.5rem;
+  }
+  

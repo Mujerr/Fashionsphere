@@ -2,36 +2,40 @@ import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import * as THREE from 'three';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
-import * as fabric from 'fabric';
-
-
+import { AngularFireAuth } from '@angular/fire/compat/auth';
+import { AngularFireStorage } from '@angular/fire/compat/storage';
+import { AngularFirestore } from '@angular/fire/compat/firestore';
 
 @Component({
   selector: 'app-disena-ropa',
   templateUrl: './disena-ropa.component.html',
   styleUrls: ['./disena-ropa.component.css']
 })
-export class DisenaRopaComponent implements OnInit  {
+export class DisenaRopaComponent implements OnInit {
   @ViewChild('canvasContainer', { static: true })
   canvasContainer!: ElementRef;
-  // canvas!: fabric.Canvas;
 
   scene!: THREE.Scene;
   camera!: THREE.PerspectiveCamera;
   renderer!: THREE.WebGLRenderer;
   controls!: OrbitControls;
   model!: THREE.Group;
+  selectedTextureType: string = 'matcap';
+  selectedPrenda: string | null = null;
   matcapTexture!: THREE.Texture;
   colorTexture!: THREE.Texture;
-  selectedTextureType: string = 'matcap';
-  activeColor: string = '#000000';
-  activeBrush: string = 'pencil';
+  activeColor: THREE.ColorRepresentation | undefined;
+  repeatOption: string ='';
+  prendaSeleccionada: string = '';
 
-  constructor() {}
+  constructor(
+    private afAuth: AngularFireAuth,
+    private storage: AngularFireStorage,
+    private firestore: AngularFirestore
+  ) {}
 
   ngOnInit(): void {
     this.initializeScene();
-    // this.initializeCanvas();
   }
 
   initializeScene(): void {
@@ -46,7 +50,7 @@ export class DisenaRopaComponent implements OnInit  {
     this.controls = this.getControls(this.camera, this.renderer.domElement);
 
     const loader = new GLTFLoader();
-    loader.load('assets/img/ropa/Sudadera.gltf', (gltf) => {
+    loader.load('assets/img/ropa/Sudadera/Sudadera.gltf', (gltf) => {
       this.model = gltf.scene;
       this.model.scale.set(150, 150, 150);
 
@@ -67,7 +71,7 @@ export class DisenaRopaComponent implements OnInit  {
     this.camera.position.z = 100;
 
     window.addEventListener('resize', () => {
-      this.camera.aspect = (window.innerWidth / 2) / (window.innerHeight / 2);
+      this.camera.aspect = window.innerWidth / window.innerHeight;
       this.camera.updateProjectionMatrix();
       this.renderer.setSize(window.innerWidth / 2, window.innerHeight / 2);
     });
@@ -89,62 +93,7 @@ export class DisenaRopaComponent implements OnInit  {
     this.controls.update();
     this.renderer.render(this.scene, this.camera);
   }
-
-  // initializeCanvas(): void {
-  //   this.canvas = new fabric.Canvas(this.canvasContainer.nativeElement);
-
-  //   const brushOptions = {
-  //     width: 10,
-  //     color: this.activeColor,
-  //     opacity: 1,
-  //     shadow: new fabric.Shadow({
-  //       color: 'rgba(0,0,0,0.3)',
-  //       blur: 5,
-  //       offsetX: 2,
-  //       offsetY: 2
-  //     })
-  //   };
-
-  //   this.canvas.freeDrawingBrush = this.getBrush(this.activeBrush);
-  //   this.canvas.freeDrawingBrush.width = brushOptions.width;
-  //   this.canvas.freeDrawingBrush.color = brushOptions.color;
-  //   this.canvas.freeDrawingBrush.shadow = brushOptions.shadow;
-
-  //   this.canvas.isDrawingMode = true;
-  // }
-
-  // changeColor(event: Event): void {
-  //   const color = (event.target as HTMLInputElement).value;
-  //   this.activeColor = color;
-  //   this.canvas.freeDrawingBrush.color = color;
-  // }
-
-  //   changeBrush(brush: string): void {
-  //   this.activeBrush = brush;
-  //   this.canvas.freeDrawingBrush = this.getBrush(brush);
-  //   this.canvas.freeDrawingBrush.width = 10;
-  //   this.canvas.freeDrawingBrush.color = this.activeColor;
-  //   this.canvas.freeDrawingBrush.shadow = new fabric.Shadow({
-  //     color: 'rgba(0,0,0,0.3)',
-  //     blur: 5,
-  //     offsetX: 2,
-  //     offsetY: 2
-  //   });
-  // }
-
-
-  // getBrush(brushType: string): fabric.BaseBrush {
-  //   switch (brushType) {
-  //     case 'circle':
-  //       return new fabric.CircleBrush();
-  //     case 'spray':
-  //       return new fabric.SprayBrush();
-  //     default:
-  //       return new fabric.PencilBrush(this.canvas);
-  //   }
-  // }
-
-
+  
   onTextureImageChange(event: Event): void {
     const file = (event.target as HTMLInputElement).files?.[0];
     if (file) {
@@ -164,7 +113,7 @@ export class DisenaRopaComponent implements OnInit  {
       this.applyMatcapTexture();
     } else if (this.selectedTextureType === 'color') {
       this.colorTexture = texture;
-      this.applyColorTexture();
+      this.applyImageColorTexture();
     }
   }
 
@@ -180,25 +129,44 @@ export class DisenaRopaComponent implements OnInit  {
     }
   }
 
-  applyColorTexture(): void {
+  applyImageColorTexture(): void {
     if (this.model && this.colorTexture) {
       this.model.traverse((child) => {
         if (child instanceof THREE.Mesh) {
           const material = new THREE.MeshStandardMaterial({ map: this.colorTexture });
+  
+          if (this.repeatOption === 'repeat' && material.map) {
+            material.map.wrapS = THREE.RepeatWrapping;
+            material.map.wrapT = THREE.RepeatWrapping;
+            material.map.repeat.set(4, 4); // Aumenta los valores para repetir más veces la textura
+          } else if (material.map) {
+            material.map.wrapS = THREE.ClampToEdgeWrapping;
+            material.map.wrapT = THREE.ClampToEdgeWrapping;
+          }
+  
           child.material = material;
         }
       });
+  
       this.renderer.render(this.scene, this.camera);
     }
   }
+  
 
-
-
-
-
-
-
-
+  applyColorTexture(): void {
+    if (this.model) {
+      const color = new THREE.Color(this.activeColor);
+  
+      this.model.traverse((child) => {
+        if (child instanceof THREE.Mesh) {
+          const material = new THREE.MeshStandardMaterial({ color });
+          child.material = material;
+        }
+      });
+  
+      this.renderer.render(this.scene, this.camera);
+    }
+  }
 
 }
 

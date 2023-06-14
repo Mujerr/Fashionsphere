@@ -22,9 +22,11 @@
   </div>
 
   <div class="prendas-list">
-    <div *ngFor="let prenda of prendas" class="prenda-item">
-      <img [src]="prenda.imagenUrl" alt="Prenda">
-      <h4>{{ prenda.Nombre }}</h4>
+    <div *ngFor="let prenda of prendas" class="prenda-item" [routerLink]="['/articulo', prenda.id]">
+      <div *ngIf="prenda.imagen">
+        <img [src]="prenda.imagen" alt="Imagen de prenda">
+      </div>
+    <h4>{{ prenda.Nombre }}</h4>
       <p class="precio">Precio: {{ prenda.Precio | currency }}</p>
     </div>
     <div *ngIf="prendas.length === 0" class="no-results">

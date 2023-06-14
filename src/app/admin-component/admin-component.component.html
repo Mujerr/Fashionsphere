@@ -89,7 +89,7 @@
         <select class="form-control" id="genero" name="genero" [(ngModel)]="nuevoProducto.genero">
           <option value="Femenino">Femenino</option>
           <option value="Masculino">Masculino</option>
-          <option value="Masculino">Otros</option>
+          <option value="Otros">Otros</option>
         </select>
       </div>
       <div class="form-group">
@@ -99,10 +99,15 @@
           <option value="Sudadera">Sudadera</option>
           <option value="Pantalones">Pantalones</option>
           <option value="Calcetines">Calcetines</option>
+          <option value="Calzado">Calzado</option>
           <option value="Bolsos">Bolsos</option>
           <option value="Belleza">Belleza</option>
           <option value="Hogar">Hogar</option>
           <option value="Mascota">Mascota</option>
+          <option value="Niños">Niños</option>
+          <option value="Niñas">Niñas</option>
+          <option value="Bebes">Bebes</option>
+
         </select>
       </div>
       <div class="form-group">
@@ -145,13 +150,13 @@
           <td>{{ prenda.Nombre }}</td>
           <td>{{ prenda.Descripcion }}</td>
           <td>
-            <button class="btn btn-primary" (click)="cargarDatosPrenda(prenda.id)">Modificar</button>
+            <button class="btn btn-primary" (click)="cargarDatosPrenda(prenda.id); tipoDato = true">Modificar</button>
             <button class="btn btn-danger" (click)="borrarPrenda(prenda.id)">Borrar</button>
           </td>
         </tr>
       </tbody>
     </table>
-    <button class="btn btn-primary" (click)="nuevoArticulo()">Añadir prenda</button>
+    <button class="btn btn-primary" (click)="nuevoArticulo(); tipoDato = false">Añadir prenda</button>
   </div>
 
   <div class="tab-pane fade" id="orders">
@@ -170,10 +175,12 @@
           <!-- Iterar sobre los pedidos y mostrarlos en filas de la tabla -->
           <tr *ngFor="let pedido of pedidos">
             <td>{{ pedido.id }}</td>
-            <td>{{ pedido.total }}</td>
-            <td>
-              <button class="btn btn-primary" (click)="modificarEstadoPedido(pedido.id)">Modificar</button>
-            </td>
+            <td>{{ pedido.Total }}</td>
+            <td><select [(ngModel)]="pedido.estado" (change)="modificarEstadoPedido(pedido)">
+              <option value="pendiente">Pendiente</option>
+              <option value="enviado">Enviado</option>
+              <option value="entregado">Entregado</option>
+            </select><td>
           </tr>
         </tbody>
       </table>

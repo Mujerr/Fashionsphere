@@ -1,0 +1,16 @@
+<!-- pedidos.component.html -->
+<h1>Mis Pedidos</h1>
+
+<div *ngIf="pedidos.length === 0">
+  <p>No tienes pedidos realizados.</p>
+</div>
+
+<div *ngFor="let pedido of pedidos">
+  <div>
+    <strong>Total:</strong> {{ pedido.total | currency }}
+  </div>
+  <div>
+    <strong>Estado:</strong> {{ pedido.estado }}
+  </div>
+  <hr>
+</div>

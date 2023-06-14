@@ -11,6 +11,9 @@ import { ComprarComponent } from './componentes/comprar/comprar.component';
 import { DisenaRopaComponent } from './componentes/disena-ropa/disena-ropa.component';
 import { TipoRopaComponent } from './componentes/tipo-ropa/tipo-ropa.component';
 import { AdminComponentComponent } from './admin-component/admin-component.component';
+import { BuscadorComponent } from './componentes/buscador/buscador.component';
+import * as path from 'path';
+import { PedidosComponent } from './componentes/pedidos/pedidos.component';
 
 const routes: Routes = [
   {path:'home',component:HomeComponent},
@@ -24,6 +27,8 @@ const routes: Routes = [
   {path:'designPrendas',component:DisenaRopaComponent},
   {path:'tipoRopa/:genero/:tipo',component:TipoRopaComponent},
   {path:'tipoRopa/:genero',component:TipoRopaComponent},
+  {path:'buscador/:texto',component:BuscadorComponent},
+  {path:'pedidos',component:PedidosComponent},
   { path: 'admin', component: AdminComponentComponent },
   {path:'**',pathMatch:'full', redirectTo:'home'},
 

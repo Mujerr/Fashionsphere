@@ -218,12 +218,8 @@ export class UsuarioService {
           await Promise.all(result.items.map(itemRef => itemRef.delete()));
         }
 
-        console.log('Usuario borrado exitosamente');
-      } else {
-        console.log('No se encontró un usuario actual');
       }
     } catch (error) {
-      console.error('Error al borrar el usuario:', error);
       this.alerta.noUsuario(); 
     }
   }
